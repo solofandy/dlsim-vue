@@ -123,7 +123,56 @@ export default class Home extends Vue {
       this.adventurers = adventurers;
       return adventurers;
     }
-}
+//     <table>
+//     <tr>
+//         <td class="color1" style="width: 200px;"></td>
+//         <td class="color2"></td>
+//         <td class="color3"></td>
+//     </tr>
+// </table>
+
+
+// <div class="demo2">
+//     <div td class="f active color1" style="width: 200px;"></div>
+//     <div class="f color2"></div>
+//     <div class="f color3"></div>
+// </div>
+
+// <style>
+// .demo2 {
+//   margin: 10px;
+// }
+// .f {
+//     display: table-cell;
+//     height: 20px;
+//     width: 20px;
+// }
+
+// .f.active {
+//     -moz-box-shadow:2px 2px 3px #666;
+//     -webkit-box-shadow:2px 2px 3px #666;
+//     box-shadow:2px 2px 3px #666;
+// }
+
+// table {
+//     border-collapse: collapse;
+// }
+// td {
+//     width: 200px;
+//     height: 20px;
+//     padding: 0px;
+// }
+// .color1 {
+//     background-color: #4cb4e7;
+// }
+// .color2 {
+//     background-color: #ffc09f;
+// }
+// .color3 {
+//     background-color: #ffee93;
+// }
+// </style>
+// }
 </script>
 
 <style scoped lang="css">
