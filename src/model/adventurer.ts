@@ -13,8 +13,8 @@ export class Adventurer {
         }
         try {
             const adt = new Adventurer();
-            adt.dps.full = parseInt(n[0], 10) || 0;
-            if (adt.dps.full === 0) {
+            adt.dps1.full = parseInt(n[0], 10) || 0;
+            if (adt.dps1.full === 0) {
                 return undefined;
             }
             adt.name = n[1] || '';
@@ -30,7 +30,7 @@ export class Adventurer {
             adt.comment = n[8] || '';
             for (let i = 9; i < n.length; i++) {
                 const df = n[i].split(':');
-                adt.dps.factors.push(new DpsFactor(df[0], parseInt(df[1], 10) || 0));
+                adt.dps1.factors.push(new DpsFactor(df[0], parseInt(df[1], 10) || 0));
             }
             return adt;
         } catch (e) {
@@ -61,7 +61,15 @@ export class Adventurer {
     public dragon: string = '';
     public condition: string = '';
     public comment: string = '';
-    public dps: Dps = new Dps();
+    public dps1: Dps = new Dps();
+    public dps2: Dps = new Dps();
+
+    public findDps2(rawAdventurers: Adventurer[]) {
+        const adt = rawAdventurers.find((a) => a.name === `_c_${this.name}`);
+        if (adt) {
+            this.dps2 = {...adt.dps1};
+        }
+    }
 }
 
 

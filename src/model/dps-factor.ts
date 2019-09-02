@@ -5,6 +5,8 @@ export class DpsFactor {
 
     public dps: number = 0;
 
+    public width: number = 0;
+
     constructor(f: string, dps: number) {
         this.factor = f;
         this.dps = dps;

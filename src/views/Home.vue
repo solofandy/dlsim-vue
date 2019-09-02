@@ -7,47 +7,26 @@
       <el-col :span="24" class="main">
         <div class="adt-holder">
           <ul class="infinite-list" v-infinite-scroll="load" style="overflow:auto">
-            <li v-for="(adt) of rendered" :key="adt.name" class="infinite-list-item adt">{{ adt.name }}</li>
+            <li v-for="(adt) of rendered" :key="adt.name" class="infinite-list-item adt">
+              <div><img class="avater" :src='"https://b1ueb1ues.github.io/dl-sim/pic/character/" + adt.name + ".png"'></div>
+              <div>
+                <div><img class="wyrmprint" :src='"https://b1ueb1ues.github.io/dl-sim/pic/amulet/" + adt.wyrmprint0 + ".png"'></div>
+                <div><img class="wyrmprint" :src='"https://b1ueb1ues.github.io/dl-sim/pic/amulet/" + adt.wyrmprint1 + ".png"'></div>
+              </div>
+              <div class="adt-body">
+                <div class="comment">[{{adt.dragon}}]{{ adt.comment ? ' - ' + adt.comment : ''}}</div>
+                <div class="factors">
+                  <div v-for="f of adt.dps1.factors" :key="f.factor" class="factor" :class="f.factor" :style="{width: f.width + 'px'}"></div>
+                  <div class="full" >{{adt.dps1.full}}</div>
+                </div>
+                <div class="factors">
+                  <div v-for="f of adt.dps2.factors" :key="f.factor" class="factor" :class="f.factor" :style="{width: f.width + 'px'}"></div>
+                  <div class="full" >{{adt.dps2.full}}</div>
+                </div>
+              </div>
+            </li>
           </ul>
         </div>
-        <!-- <el-table
-          :data="adventurers"
-          border
-          style="width: 100%">
-          <el-table-column
-            fixed
-            prop="name"
-            label="日期">
-          </el-table-column>
-          <el-table-column
-            prop="rarity"
-            label="姓名">
-          </el-table-column>
-          <el-table-column
-            prop="element"
-            label="省份">
-          </el-table-column>
-          <el-table-column
-            prop="weapon"
-            label="市区">
-          </el-table-column>
-          <el-table-column
-            prop="dragon"
-            label="地址">
-          </el-table-column>
-          <el-table-column
-            prop="condition"
-            label="邮编">
-          </el-table-column>
-          <el-table-column
-            fixed="right"
-            label="操作">
-            <template slot-scope="scope">
-              <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
-              <el-button type="text" size="small">编辑</el-button>
-            </template>
-          </el-table-column>
-        </el-table> -->
       </el-col>
     </el-row>
   </div>
@@ -67,112 +46,45 @@ export default class Home extends Vue {
   private adverturerReady: boolean = false;
   private adventurers: Adventurer[] = [];
   private rendered: Adventurer[] = [];
-  private tableData = [{
-      date: '2016-05-02',
-      name: '王小虎',
-      province: '上海',
-      city: '普陀区',
-      address: '上海市普陀区金沙江路 1518 弄',
-      zip: 200333,
-    }, {
-      date: '2016-05-04',
-      name: '王小虎',
-      province: '上海',
-      city: '普陀区',
-      address: '上海市普陀区金沙江路 1517 弄',
-      zip: 200333,
-    }, {
-      date: '2016-05-01',
-      name: '王小虎',
-      province: '上海',
-      city: '普陀区',
-      address: '上海市普陀区金沙江路 1519 弄',
-      zip: 200333,
-    }, {
-      date: '2016-05-03',
-      name: '王小虎',
-      province: '上海',
-      city: '普陀区',
-      address: '上海市普陀区金沙江路 1516 弄',
-      zip: 200333,
-    }];
+  constructor() {
+    super();
+    // @ts-ignore
+    window.$home = this;
+  }
 
-    constructor() {
-      super();
-      // @ts-ignore
-      window.$home = this;
-    }
-
-    public async load() {
-      if (!this.adverturerReady) {
-        const csv = await Http.Get('/180/data__.csv', 'text');
-        this.adventurers = Adventurer.ParseCSV(csv);
-        this.adverturerReady = true;
-      }
-      let count = 10;
-      while (this.index < this.adventurers.length && count > 0) {
-        this.rendered.push(this.adventurers[this.index]);
-        this.index++;
-        count--;
-      }
-    }
-
-    public async test() {
+  public async load() {
+    if (!this.adverturerReady) {
       const csv = await Http.Get('/180/data__.csv', 'text');
-      const adventurers = Adventurer.ParseCSV(csv);
-      this.adventurers = adventurers;
-      return adventurers;
+      const rawAdventurers = Adventurer.ParseCSV(csv);
+      this.adventurers = rawAdventurers.filter((a) => /^_c_/.test(a.name) === false);
+      this.adventurers.forEach((a) => a.findDps2(rawAdventurers));
+      this.adventurers.sort((p, q) => p.dps1.full > q.dps1.full ? -1 : p.dps1.full === q.dps1.full ? 0 : 1);
+
+      if (this.adventurers.length > 0) {
+        const maxx = this.adventurers[0].dps1.full;
+        this.adventurers.forEach((a) => {
+          a.dps1.factors.forEach((f) => f.width = 650 * f.dps / maxx);
+          a.dps2.factors.forEach((f) => f.width = 650 * f.dps / maxx);
+        });
+      }
+
+      this.adverturerReady = true;
     }
-//     <table>
-//     <tr>
-//         <td class="color1" style="width: 200px;"></td>
-//         <td class="color2"></td>
-//         <td class="color3"></td>
-//     </tr>
-// </table>
+    let count = 10;
+    while (this.index < this.adventurers.length && count > 0) {
+      this.rendered.push(this.adventurers[this.index]);
+      this.index++;
+      count--;
+    }
+  }
 
-
-// <div class="demo2">
-//     <div td class="f active color1" style="width: 200px;"></div>
-//     <div class="f color2"></div>
-//     <div class="f color3"></div>
-// </div>
-
-// <style>
-// .demo2 {
-//   margin: 10px;
-// }
-// .f {
-//     display: table-cell;
-//     height: 20px;
-//     width: 20px;
-// }
-
-// .f.active {
-//     -moz-box-shadow:2px 2px 3px #666;
-//     -webkit-box-shadow:2px 2px 3px #666;
-//     box-shadow:2px 2px 3px #666;
-// }
-
-// table {
-//     border-collapse: collapse;
-// }
-// td {
-//     width: 200px;
-//     height: 20px;
-//     padding: 0px;
-// }
-// .color1 {
-//     background-color: #4cb4e7;
-// }
-// .color2 {
-//     background-color: #ffc09f;
-// }
-// .color3 {
-//     background-color: #ffee93;
-// }
-// </style>
-// }
+  public async test() {
+    const csv = await Http.Get('/180/data__.csv', 'text');
+    const adventurers = Adventurer.ParseCSV(csv);
+    this.adventurers = adventurers;
+    return adventurers;
+  }
+}
 </script>
 
 <style scoped lang="css">
@@ -185,11 +97,11 @@ export default class Home extends Vue {
     box-shadow: 0 2px 4px rgba(0,0,0,.1);
   }
   .adt-holder {
-    width: 600px;
+    width: 900px;
     margin: auto;
   }
   .adt-holder ul {
-    height: 600px;
+    max-height: 800px;
     overflow: auto;
     list-style: none;
   }
@@ -197,9 +109,78 @@ export default class Home extends Vue {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 50px;
+    height: 80px;
     background: #e8f3fe;
     margin: 10px;
     color: #333;
   }
+  
+  img.avater {
+    width: 66px;
+    height: 66px;
+  }
+  
+  img.wyrmprint {
+    width: 30px;
+    height: 30px;
+  }
+  
+  div.adt-body {
+    margin-left: 6px;
+    text-align: left; 
+  }
+  
+  div.comment {
+    font-size: 11px;
+    margin-bottom: 2px;
+  }
+  
+  div.factors {
+    width: 700px;
+  }
+  
+  div.factor {
+     display: table-cell;
+     height: 18px;
+     width: 0px;
+     background-color: #228fbd;
+  }
+  div.full {
+     display: table-cell;
+     height: 18px;
+     width: 20px;
+     padding-left: 2px;
+     font-size: 12px;
+     line-height: 18px;
+  }
+  .factor.attack {
+    background-color: #4cb4e7;
+  }
+  .factor.force_strike {
+    background-color: #ffc09f;
+  }
+  .factor.skill_1 {
+    background-color: #495A80;
+  }
+  .factor.skill_2 {
+    background-color: #008573;
+  }
+  .factor.skill_3 {
+    background-color: #483C32;
+  }
+  .factor.team_buff {
+    background-color: #FFA07B;
+  }
+  .factor.s1_poison {
+    background-color: #7fb80e;
+  }
+  
+  
+
+  div.factor:hover,
+  div.factor.active {
+     -moz-box-shadow:2px 2px 3px #666;
+     -webkit-box-shadow:2px 2px 3px #666;
+     box-shadow:2px 2px 3px #666;
+ }
 </style>
