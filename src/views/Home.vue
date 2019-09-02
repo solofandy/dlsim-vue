@@ -5,9 +5,11 @@
     </el-row>
     <el-row class="container">
       <el-col :span="24" class="main">
-        <ul class="infinite-list" v-infinite-scroll="load" style="overflow:auto">
-          <li v-for="(adt) of rendered" :key="adt.name" class="infinite-list-item">{{ adt.name }}</li>
-        </ul>
+        <div class="adt-holder">
+          <ul class="infinite-list" v-infinite-scroll="load" style="overflow:auto">
+            <li v-for="(adt) of rendered" :key="adt.name" class="infinite-list-item adt">{{ adt.name }}</li>
+          </ul>
+        </div>
         <!-- <el-table
           :data="adventurers"
           border
@@ -62,6 +64,7 @@ import { Adventurer } from '../model/adventurer';
 })
 export default class Home extends Vue {
   private index: number = 0;
+  private adverturerReady: boolean = false;
   private adventurers: Adventurer[] = [];
   private rendered: Adventurer[] = [];
   private tableData = [{
@@ -101,9 +104,10 @@ export default class Home extends Vue {
     }
 
     public async load() {
-      if (!this.adventurers) {
+      if (!this.adverturerReady) {
         const csv = await Http.Get('/180/data__.csv', 'text');
         this.adventurers = Adventurer.ParseCSV(csv);
+        this.adverturerReady = true;
       }
       let count = 10;
       while (this.index < this.adventurers.length && count > 0) {
@@ -130,5 +134,23 @@ export default class Home extends Vue {
     background: #fefefe;
     color:#333;
     box-shadow: 0 2px 4px rgba(0,0,0,.1);
+  }
+  .adt-holder {
+    width: 600px;
+    margin: auto;
+  }
+  .adt-holder ul {
+    height: 600px;
+    overflow: auto;
+    list-style: none;
+  }
+  .adt-holder ul li.adt {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    background: #e8f3fe;
+    margin: 10px;
+    color: #333;
   }
 </style>
