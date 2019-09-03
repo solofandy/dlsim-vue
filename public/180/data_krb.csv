@@ -25,8 +25,8 @@ dps,name,star,element,weapon,str,amulets,condition,comment,
 3092,_c_Jurota,3*,water,blade,2317,[Resounding_Rendition+Crystalian_Envoy][Siren],!<hp70>,,attack:977,force_strike:0,skill_1:2114,skill_2:0,skill_3:0,team_buff:0
 4816,Melody,3*,wind,blade,3040,[Halidom_Grooms+Resounding_Rendition][Zephyr],<hp100 & hp70>,no s2,attack:1837,force_strike:0,skill_1:0,skill_2:0,skill_3:753,team_buff:2225
 4559,_c_Melody,3*,wind,blade,3040,[Halidom_Grooms+Resounding_Rendition][Zephyr],!<hp100 & hp70>,no s2,attack:1655,force_strike:0,skill_1:0,skill_2:0,skill_3:678,team_buff:2225
-4752,Mikoto,5*,flame,blade,2383,[Resounding_Rendition+Crystalian_Envoy][Sakuya],<connect s1 & hp70>,,attack:1511,force_strike:0,skill_1:2256,skill_2:0,skill_3:984,team_buff:0
-3783,_c_Mikoto,5*,flame,blade,2383,[Resounding_Rendition+Crystalian_Envoy][Sakuya],!<connect s1 & hp70>,,attack:1290,force_strike:0,skill_1:1572,skill_2:0,skill_3:920,team_buff:0
+4603,Mikoto,5*,flame,blade,2383,[Resounding_Rendition+Crystalian_Envoy][Sakuya],<hp70>,,attack:1511,force_strike:0,skill_1:2107,skill_2:0,skill_3:984,team_buff:0
+3715,_c_Mikoto,5*,flame,blade,2383,[Resounding_Rendition+Crystalian_Envoy][Sakuya],!<hp70>,,attack:1219,force_strike:0,skill_1:1701,skill_2:0,skill_3:794,team_buff:0
 4386,Musashi,4*,wind,blade,2936,[Resounding_Rendition+Crystalian_Envoy][Pazuzu],<last offense & hp70 & 0 resist>,,attack:1534,force_strike:0,skill_1:1841,skill_2:0,skill_3:598,team_buff:0,s1_poison:411
 2941,_c_Musashi,4*,wind,blade,2936,[Resounding_Rendition+Crystalian_Envoy][Pazuzu],!<last offense & hp70 & 0 resist>,,attack:1126,force_strike:0,skill_1:1370,skill_2:0,skill_3:445,team_buff:0,s1_poison:0
 3807,Taro,3*,shadow,blade,2370,[Resounding_Rendition+Crystalian_Envoy][Shinobi],<hp70>,,attack:839,force_strike:0,skill_1:1709,skill_2:682,skill_3:575,team_buff:0
@@ -157,8 +157,8 @@ dps,name,star,element,weapon,str,amulets,condition,comment,
 4281,_c_G_Ranzal,5*,wind,sword,2263,[Valiant_Crown+First_Rate_Hospitality][Vayu],!<hp70>,3FS & first S1 with 1 gauge & S2 with >=30% gauge,attack:822,force_strike:218,skill_1:1641,skill_2:0,skill_3:0,team_buff:0,s1_boost:1263,fs_alt:335
 3750,Laranoa,5*,water,bow,2723,[Resounding_Rendition+Flash_of_Genius][DJ],<buff all team & never lose comboes & c4+fs & hp70 & hit15>,doesn't count spbuff for teammates,attack:1069,force_strike:311,skill_1:2161,skill_2:0,skill_3:0,team_buff:207
 2673,_c_Laranoa,5*,water,bow,2723,[Resounding_Rendition+Flash_of_Genius][DJ],!<buff all team & never lose comboes & c4+fs & hp70 & hit15>,doesn't count spbuff for teammates,attack:960,force_strike:0,skill_1:1713,skill_2:0,skill_3:0,team_buff:0
-5433,Fleur,4*,light,dagger,3031,[Twinfold_Bonds+Levins_Champion][Cupid],<hp70 & hit15 & 0 resist>,don't use s2 in s3 nor s3 in s2,attack:1789,force_strike:254,skill_1:1698,skill_2:0,skill_3:0,team_buff:0,s1_boost:1096,s1_paralysis:595
-2744,_c_Fleur,4*,light,dagger,3031,[Twinfold_Bonds+Levins_Champion][Cupid],!<hp70 & hit15 & 0 resist>,don't use s2 in s3 nor s3 in s2,attack:1311,force_strike:186,skill_1:1247,skill_2:0,skill_3:0,team_buff:0,s1_boost:0,s1_paralysis:0
+6450,Fleur,4*,light,dagger,3031,[Twinfold_Bonds+Levins_Champion][Cupid],<hp70 & hit15 & 0 resist>,don't use s2 in s3 nor s3 in s2,attack:1674,force_strike:315,skill_1:2208,skill_2:0,skill_3:0,team_buff:0,s1_paralysis:693,s1_boost:1558
+3046,_c_Fleur,4*,light,dagger,3031,[Twinfold_Bonds+Levins_Champion][Cupid],!<hp70 & hit15 & 0 resist>,don't use s2 in s3 nor s3 in s2,attack:1220,force_strike:230,skill_1:1596,skill_2:0,skill_3:0,team_buff:0,s1_paralysis:0,s1_boost:0
 3874,Yue,4*,flame,axe,2698,[Kung_Fu_Masters+Flower_in_the_Fray][Arctos], ,Arctos,attack:1782,force_strike:81,skill_1:2010,skill_2:0,skill_3:0,team_buff:0
 4457,Sylas,5*,wind,lance,2783,[Resounding_Rendition+Crystalian_Envoy][Pazuzu],<hp70 & 0 resist>,not consider skill haste for team,attack:1433,force_strike:231,skill_1:2044,skill_2:0,skill_3:0,team_buff:261,s1_poison:485
 2837,_c_Sylas,5*,wind,lance,2783,[Resounding_Rendition+Crystalian_Envoy][Pazuzu],!<hp70 & 0 resist>,not consider skill haste for team,attack:993,force_strike:160,skill_1:1421,skill_2:0,skill_3:0,team_buff:261,s1_poison:0

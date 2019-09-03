@@ -2,31 +2,32 @@
   <div>
     <el-row class="container">
       <el-col :span="24" class="header">
+        <div class="the-brand"><a href="https://github.com/b1ueb1ues/b1ueb1ues.github.io" target="_blank">DPS Sim @b1ueb1ues.github.io</a></div>
         <ul class="head-bar">
           <li>
-            <el-radio-group v-model="category" size="small">
-              <el-radio-button label="Special"></el-radio-button>
-              <el-radio-button label="60s"></el-radio-button>
-              <el-radio-button label="120s"></el-radio-button>
-              <el-radio-button label="180s"></el-radio-button>
+            <el-radio-group v-model="category" size="mini" @change="reload()">
+              <el-radio-button label="sp" value="sp">Special</el-radio-button>
+              <el-radio-button label="60">60s</el-radio-button>
+              <el-radio-button label="120">120s</el-radio-button>
+              <el-radio-button label="180">180s</el-radio-button>
             </el-radio-group>
           </li>
           <li class="label">
             <span>Rarity:</span>
           </li>
           <li>
-            <el-select v-model="rarity" size="mini" style="width: 100px;">
-              <el-option key="all" label="All"></el-option>
-              <el-option key="5" label="5 Stars"></el-option>
-              <el-option key="4" label="4 Stars"></el-option>
-              <el-option key="3" label="3 Stars"></el-option>
+            <el-select v-model="rarity" size="mini" style="width: 100px;" @change="reload()">
+              <el-option value="all" label="All"></el-option>
+              <el-option value="5" label="5 Stars"></el-option>
+              <el-option value="4" label="4 Stars"></el-option>
+              <el-option value="3" label="3 Stars"></el-option>
             </el-select>
           </li>
           <li class="label">
             <span>Element:</span>
           </li>
           <li>
-            <el-select v-model="element" size="mini" style="width: 100px;">
+            <el-select v-model="element" size="mini" style="width: 100px;" @change="reload()">
               <el-option value="all" label="All"></el-option>
               <el-option value="flame" label="Flame"></el-option>
               <el-option value="water" label="Water"></el-option>
@@ -39,7 +40,7 @@
             <span>Class:</span>
           </li>
           <li>
-            <el-select v-model="weapon" size="mini" style="width: 100px;">
+            <el-select v-model="weapon" size="mini" style="width: 100px;" @change="reload()">
               <el-option value="all" label="All"></el-option>
               <el-option value="sword" label="Sword"></el-option>
               <el-option value="blade" label="Blade"></el-option>
@@ -57,13 +58,19 @@
             <span>Co-abilities:</span>
           </li>
           <li>
-            <el-checkbox-group v-model="exs" size="mini">
+            <el-checkbox-group v-model="exs" size="mini" @change="reload()">
               <el-checkbox label="k">
                 <img class="icon-weapon" src="https://b1ueb1ues.github.io/dl-sim/pic/weapon/blade.png" alt="K"/>
               </el-checkbox>
-              <el-checkbox label="r"></el-checkbox>
-              <el-checkbox label="d"></el-checkbox>
-              <el-checkbox label="b"></el-checkbox>
+              <el-checkbox label="r">
+                <img class="icon-weapon" src="https://b1ueb1ues.github.io/dl-sim/pic/weapon/wand.png" alt="K"/>
+              </el-checkbox>
+              <el-checkbox label="d">
+                <img class="icon-weapon" src="https://b1ueb1ues.github.io/dl-sim/pic/weapon/dagger.png" alt="K"/>
+              </el-checkbox>
+              <el-checkbox label="b">
+                <img class="icon-weapon" src="https://b1ueb1ues.github.io/dl-sim/pic/weapon/bow.png" alt="K"/>
+              </el-checkbox>
             </el-checkbox-group>
           </li>
         </ul>
@@ -82,23 +89,33 @@
               <div class="adt-body">
                 <div class="comment">[{{adt.dragon}}]{{ adt.comment ? '  - ' + adt.comment : ''}}</div>
                 <div class="factors">
-                  <div @click="viewFactors(adt, adt.dps1, $event)" v-for="f of adt.dps1.factors" :key="f.factor" class="factor bb" :class="f.factor" :style="{width: f.width + 'px'}"></div>
+                  <div @mouseenter="viewFactors(adt, adt.dps1, $event)" v-for="f of adt.dps1.factors" :key="f.factor" class="factor bb" :class="f.factor" :style="{width: f.width + 'px'}"></div>
                   <div class="full" >{{adt.dps1.full}}</div>
                 </div>
                 <div class="factors">
-                  <div @click="viewFactors(adt, adt.dps1, $event)" v-for="f of adt.dps2.factors" :key="f.factor" class="factor" :class="f.factor" :style="{width: f.width + 'px'}"></div>
+                  <div @mouseenter="viewFactors(adt, adt.dps2, $event)" v-for="f of adt.dps2.factors" :key="f.factor" class="factor" :class="f.factor" :style="{width: f.width + 'px'}"></div>
                   <div class="full" >{{adt.dps2.full}}</div>
                 </div>
               </div>
             </li>
           </ul>
+          <p v-if="adventurerLoading">loading...</p>
         </div>
       </el-col>
     </el-row>
      <el-popover popper-class="factors-detail" ref="factors" trigger="manual" visible-arrow="false">  <!-- @click.native="closeDetail()"> -->
       <div class="">
-        <p><b>{{thatAdventurer.name}}{{ thatAdventurer.comment ? '  - ' + thatAdventurer.comment : ''}}</b></p>
-        <p>[{{thatAdventurer.wyrmprint0}} + {{thatAdventurer.wyrmprint1}}]</p>
+        <span style="float: right; font-size: 18px; color: #999; cursor: pointer;" @click="closeDetail()">&times;</span>
+        <div style="display: inline-block;">
+          <img class="avater" :alt="thatAdventurer.name" :src='"https://b1ueb1ues.github.io/dl-sim/pic/character/" + thatAdventurer.name + ".png"'>
+        </div>
+        <div style="display: inline-block;">
+          <div><img class="wyrmprint" :src='"https://b1ueb1ues.github.io/dl-sim/pic/amulet/" + thatAdventurer.wyrmprint0 + ".png"'></div>
+          <div><img class="wyrmprint" :src='"https://b1ueb1ues.github.io/dl-sim/pic/amulet/" + thatAdventurer.wyrmprint1 + ".png"'></div>
+        </div>
+        <p><b>{{thatAdventurer.name}}</b></p>
+        <p v-if="thatAdventurer.comment ">{{thatAdventurer.comment}}</p>
+        <p v-if="thatAdventurer.dps1.full === thatDps.full">{{thatAdventurer.condition}}</p>
         <p v-for="(f) of thatDps.factors" :key="f.factor">
           <span class="f-title">{{f.factor}}: </span>{{f.dps}}
         </p>
@@ -120,7 +137,15 @@ import { ElPopover } from 'element-ui/types/popover';
   components: {},
 })
 export default class Home extends Vue {
-  public category: string = '180s';
+
+  public get csvUrl(): string {
+    return `/${this.category.toLowerCase()}/data_${this.exs.length === 0 ? '_' : this.exs.join('')}.csv`;
+  }
+
+  public get noMore() {
+    return this.adventurerProcessed >= this.adventurers.length;
+  }
+  public category: 'sp' | '60' | '120' | '180' = '180';
   public rarity: string = 'all';
   public element: string = 'all';
   public weapon: string = 'all';
@@ -128,37 +153,50 @@ export default class Home extends Vue {
 
   public ulHeight: string = '400px';
   public detailPopover: boolean = false;
-  public index: number = 0;
   public adverturerReady: boolean = false;
-  public adventurers: Adventurer[] = [];
-  public rendered: Adventurer[] = [];
-  public visible: boolean = false;
 
   public thatAdventurer: Adventurer = new Adventurer();
   public thatDps: Dps = new Dps();
 
+  private cachedCsvUrl: string = '';
+  private adventurers: Adventurer[] = [];
+  private adventurerProcessed: number = 0;
+  private adventurerLoading: boolean = true;
+  private rendered: Adventurer[] = [];
+
+  public async reload() {
+    this.closeDetail();
+    this.rendered = [];
+    this.adventurerProcessed = 0;
+    await this.load();
+  }
+
   public async load() {
-    if (!this.adverturerReady) {
-      const csv = await Http.Get('/180/data__.csv', 'text');
-      const rawAdventurers = Adventurer.ParseCSV(csv);
-      this.adventurers = rawAdventurers.filter((a) => /^_c_/.test(a.name) === false);
-      this.adventurers.forEach((a) => a.findDps2(rawAdventurers));
-      this.adventurers.sort((p, q) => p.dps1.full > q.dps1.full ? -1 : p.dps1.full === q.dps1.full ? 0 : 1);
-      if (this.adventurers.length > 0) {
-        const maxx = this.adventurers[0].dps1.full;
-        this.adventurers.forEach((a) => {
-          a.dps1.factors.forEach((f) => f.width = 650 * f.dps / maxx);
-          a.dps2.factors.forEach((f) => f.width = 650 * f.dps / maxx);
-        });
+    this.adventurerLoading = true;
+    if (this.csvUrl !== this.cachedCsvUrl) {
+      const csv = await this.loadCsv();
+      if (!!csv) {
+        this.adventurers = Adventurer.ParseCSV(csv);
+        this.adventurerProcessed = 0;
+        this.cachedCsvUrl = this.adventurers.length > 0 ? this.csvUrl : '';
+        if (this.adventurers.length > 0) {
+          const maxx = this.adventurers[0].dps1.full;
+          this.adventurers.forEach((a) => {
+            a.dps1.factors.forEach((f) => f.width = 650 * f.dps / maxx);
+            a.dps2.factors.forEach((f) => f.width = 650 * f.dps / maxx);
+          });
+        }
       }
-      this.adverturerReady = true;
     }
-    let count = 15;
-    while (this.index < this.adventurers.length && count > 0) {
-      this.rendered.push(this.adventurers[this.index]);
-      this.index++;
-      count--;
+    let count = 12;
+    while (this.adventurerProcessed < this.adventurers.length && count > 0) {
+      if (this.matched(this.adventurers[this.adventurerProcessed])) {
+        this.rendered.push(this.adventurers[this.adventurerProcessed]);
+        count--;
+      }
+      this.adventurerProcessed++;
     }
+    this.adventurerLoading = false;
   }
 
   public async test() {
@@ -184,7 +222,7 @@ export default class Home extends Vue {
 
     const $detail: any = this.$refs.factors as ElPopover;
     $detail.$refs.popper.style.left = '1388px';
-    $detail.$refs.popper.style.top = `${$event.clientY - 20}px`;
+    $detail.$refs.popper.style.top = `${$event.clientY - $event.clientY  % 20}px`;
     $detail.showPopper = true;
   }
 
@@ -193,6 +231,27 @@ export default class Home extends Vue {
     $detail.showPopper = false;
   }
 
+  private async loadCsv(): Promise<string> {
+    try {
+      const csv: string = await Http.Get(this.csvUrl, 'text');
+      return csv;
+    } catch (e) {
+      return '';
+    }
+  }
+
+  private matched(adventurer: Adventurer): boolean {
+    if (this.rarity !== 'all' && adventurer.rarity !== this.rarity) {
+      return false;
+    }
+    if (this.element !== 'all' && adventurer.element !== this.element) {
+      return false;
+    }
+    if (this.weapon !== 'all' && adventurer.weapon !== this.weapon) {
+      return false;
+    }
+    return true;
+  }
 
   private adjustUlHeight() {
     this.ulHeight = `${Math.max(200, window.innerHeight - 90)}px`;
@@ -201,8 +260,14 @@ export default class Home extends Vue {
 </script>
 
 <style scoped lang="css">
-  .page-container {
-    width: 1140px;
+  .the-brand {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  .the-brand a {
+    color: #555;
+    text-decoration: none;
   }
   .header {
     font-size: 11px;
@@ -357,15 +422,11 @@ export default class Home extends Vue {
     -webkit-box-shadow: 0 0 2px 2px rgba(64, 64, 64, 0.2);
   }
 
-  div.factors-detail {
-    background: black!important;
-    font-size: 12px;
-  }
-
   .factors-detail p {
     color: #333;
     padding: 1px;
     margin: 0px;
+    font-size: 12px;
   }
 
   span.f-title {

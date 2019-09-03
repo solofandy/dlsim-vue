@@ -18,7 +18,7 @@ export class Adventurer {
                 return undefined;
             }
             adt.name = n[1] || '';
-            adt.rarity = parseInt(n[2].replace('*', ''), 10) || 0;
+            adt.rarity = n[2].replace('*', '');
             adt.element = n[3] || '';
             adt.weapon = n[4] || '';
             adt.fifth = n[5];
@@ -41,19 +41,22 @@ export class Adventurer {
 
     public static ParseCSV(csv: string): Adventurer[] {
         const lines = csv.split(/\n/);
-        const result = [];
+        const raw: Adventurer[] = [];
         for (const line of lines) {
             const a = Adventurer.ParseCSVLine(line);
             if (!!a) {
-                result.push(a);
+                raw.push(a);
             }
         }
+        const result = raw.filter((a) => /^_c_/.test(a.name) === false);
+        result.forEach((a) => a.findDps2(raw));
+        result.sort((p, q) => p.dps1.full > q.dps1.full ? -1 : p.dps1.full === q.dps1.full ? 0 : 1);
         return result;
     }
 
     // public dps_full: number = 0;
     public name: string = '';
-    public rarity: number = 0;
+    public rarity: string = '';
     public element: string = '';
     public weapon: string = '';
     public fifth: string = '';
