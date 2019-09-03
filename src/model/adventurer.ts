@@ -32,6 +32,7 @@ export class Adventurer {
                 const df = n[i].split(':');
                 adt.dps1.factors.push(new DpsFactor(df[0], parseInt(df[1], 10) || 0));
             }
+            adt.dps1.factors = adt.dps1.factors.filter((f) => f.dps > 0);
             return adt;
         } catch (e) {
             return undefined;
