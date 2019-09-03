@@ -16,10 +16,10 @@
           </li>
           <li>
             <el-select v-model="rarity" size="mini" style="width: 100px;">
-              <el-option key="all" label="All" value="all"></el-option>
-              <el-option key="5" label="5 Stars" value="5"></el-option>
-              <el-option key="4" label="4 Stars" value="4"></el-option>
-              <el-option key="3" label="3 Stars" value="3"></el-option>
+              <el-option key="all" label="All"></el-option>
+              <el-option key="5" label="5 Stars"></el-option>
+              <el-option key="4" label="4 Stars"></el-option>
+              <el-option key="3" label="3 Stars"></el-option>
             </el-select>
           </li>
           <li class="label">
@@ -27,10 +27,12 @@
           </li>
           <li>
             <el-select v-model="element" size="mini" style="width: 100px;">
-              <el-option key="all" label="All" value="all"></el-option>
-              <el-option key="5" label="5 Stars" value="5"></el-option>
-              <el-option key="4" label="4 Stars" value="4"></el-option>
-              <el-option key="3" label="3 Stars" value="3"></el-option>
+              <el-option value="all" label="All"></el-option>
+              <el-option value="flame" label="Flame"></el-option>
+              <el-option value="water" label="Water"></el-option>
+              <el-option value="wind" label="Wind"></el-option>
+              <el-option value="light" label="Light"></el-option>
+              <el-option value="shadow" label="Shadow"></el-option>
             </el-select>
           </li>
           <li class="label">
@@ -38,10 +40,14 @@
           </li>
           <li>
             <el-select v-model="weapon" size="mini" style="width: 100px;">
-              <el-option key="all" label="All" value="all"></el-option>
-              <el-option key="5" label="5 Stars" value="5"></el-option>
-              <el-option key="4" label="4 Stars" value="5"></el-option>
-              <el-option key="3" label="3 Stars" value="3"></el-option>
+              <el-option value="all" label="All"></el-option>
+              <el-option value="sword" label="Sword"></el-option>
+              <el-option value="blade" label="Blade"></el-option>
+              <el-option value="dagger" label="Dagger"></el-option>
+              <el-option value="axe" label="axe"></el-option>
+              <el-option value="lance" label="Lance"></el-option>
+              <el-option value="bow" label="Bow"></el-option>
+              <el-option value="wand" label="Wand"></el-option>
             </el-select>
           </li>
           <li>
@@ -147,7 +153,7 @@ export default class Home extends Vue {
       }
       this.adverturerReady = true;
     }
-    let count = 10;
+    let count = 15;
     while (this.index < this.adventurers.length && count > 0) {
       this.rendered.push(this.adventurers[this.index]);
       this.index++;
