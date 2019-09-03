@@ -2,7 +2,65 @@
   <div>
     <el-row class="container">
       <el-col :span="24" class="header">
-        HEADER
+        <ul class="head-bar">
+          <li>
+            <el-radio-group v-model="category" size="small">
+              <el-radio-button label="Special"></el-radio-button>
+              <el-radio-button label="60s"></el-radio-button>
+              <el-radio-button label="120s"></el-radio-button>
+              <el-radio-button label="180s"></el-radio-button>
+            </el-radio-group>
+          </li>
+          <li class="label">
+            <span>Rarity:</span>
+          </li>
+          <li>
+            <el-select v-model="rarity" size="mini" style="width: 100px;">
+              <el-option key="all" label="All" value="all"></el-option>
+              <el-option key="5" label="5 Stars" value="5"></el-option>
+              <el-option key="4" label="4 Stars" value="4"></el-option>
+              <el-option key="3" label="3 Stars" value="3"></el-option>
+            </el-select>
+          </li>
+          <li class="label">
+            <span>Element:</span>
+          </li>
+          <li>
+            <el-select v-model="element" size="mini" style="width: 100px;">
+              <el-option key="all" label="All" value="all"></el-option>
+              <el-option key="5" label="5 Stars" value="5"></el-option>
+              <el-option key="4" label="4 Stars" value="4"></el-option>
+              <el-option key="3" label="3 Stars" value="3"></el-option>
+            </el-select>
+          </li>
+          <li class="label">
+            <span>Class:</span>
+          </li>
+          <li>
+            <el-select v-model="weapon" size="mini" style="width: 100px;">
+              <el-option key="all" label="All" value="all"></el-option>
+              <el-option key="5" label="5 Stars" value="5"></el-option>
+              <el-option key="4" label="4 Stars" value="5"></el-option>
+              <el-option key="3" label="3 Stars" value="3"></el-option>
+            </el-select>
+          </li>
+          <li>
+            <dir class="sep"></dir>
+          </li>
+          <li>
+            <span>Co-abilities:</span>
+          </li>
+          <li>
+            <el-checkbox-group v-model="exs" size="mini">
+              <el-checkbox label="k">
+                <img class="icon-weapon" src="https://b1ueb1ues.github.io/dl-sim/pic/weapon/blade.png" alt="K"/>
+              </el-checkbox>
+              <el-checkbox label="r"></el-checkbox>
+              <el-checkbox label="d"></el-checkbox>
+              <el-checkbox label="b"></el-checkbox>
+            </el-checkbox-group>
+          </li>
+        </ul>
       </el-col>
     </el-row>
     <el-row class="container">
@@ -56,21 +114,22 @@ import { ElPopover } from 'element-ui/types/popover';
   components: {},
 })
 export default class Home extends Vue {
-  private ulHeight: string = '400px';
-  private detailPopover: boolean = false;
-  private index: number = 0;
-  private adverturerReady: boolean = false;
-  private adventurers: Adventurer[] = [];
-  private rendered: Adventurer[] = [];
-  private visible: boolean = false;
+  public category: string = '180s';
+  public rarity: string = 'all';
+  public element: string = 'all';
+  public weapon: string = 'all';
+  public exs: string[] = [];
 
-  private thatAdventurer: Adventurer = new Adventurer();
-  private thatDps: Dps = new Dps();
-  constructor() {
-    super();
-    // @ts-ignore
-    window.$home = this;
-  }
+  public ulHeight: string = '400px';
+  public detailPopover: boolean = false;
+  public index: number = 0;
+  public adverturerReady: boolean = false;
+  public adventurers: Adventurer[] = [];
+  public rendered: Adventurer[] = [];
+  public visible: boolean = false;
+
+  public thatAdventurer: Adventurer = new Adventurer();
+  public thatDps: Dps = new Dps();
 
   public async load() {
     if (!this.adverturerReady) {
@@ -108,6 +167,8 @@ export default class Home extends Vue {
       this.adjustUlHeight();
     };
     this.adjustUlHeight();
+    // @ts-ignore
+    window.$home = this;
   }
 
   public viewFactors(adventurer: Adventurer, dps: Dps, $event: MouseEvent) {
@@ -134,7 +195,11 @@ export default class Home extends Vue {
 </script>
 
 <style scoped lang="css">
+  .page-container {
+    width: 1140px;
+  }
   .header {
+    font-size: 11px;
     margin: 0px;
     height: 60px;
     line-height: 60px;
@@ -142,6 +207,45 @@ export default class Home extends Vue {
     color:#333;
     box-shadow: 0 2px 4px rgba(0,0,0,.1);
   }
+  ul.head-bar {
+    float: right;
+    height: 100%;
+    line-height: 60px;
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    margin-right: 100px;
+  }
+
+  ul.head-bar li {
+    margin: 0;
+    float: left;
+    list-style: none;
+    position: relative;
+    cursor: pointer;
+    padding-left: 5px;
+  }
+
+  ul.head-bar li.label {
+    margin-left: 10px;
+  }
+
+  ul.head-bar li .sep {
+    width: 1px;
+    height: 36px;
+    background: #ccc;
+    padding: 0px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .icon-weapon {
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    margin-bottom: -3px;
+  }
+
   .adt-holder {
     width: 900px;
     margin: auto;
