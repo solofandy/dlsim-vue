@@ -91,14 +91,16 @@
                 <div>
                   <div class="factors mb-5">
                     <el-tooltip placement="top" :open-delay="200" v-for="f of scope.row.dps1.factors" :key="f.factor" class="factor bb" :class="f.factor" :style="{width: f.width + '%'}">
-                      <div slot="content"><span>{{f.factor}}: </span>{{f.dps}}</div>
+                      <div slot="content"><span class="f-title">{{f.factor}}: </span>{{f.dps}}</div>
                       <div></div> 
                     </el-tooltip>
-                    <!-- <div v-for="f of scope.row.dps1.factors" :key="f.factor" class="factor bb" :class="f.factor" :style="{width: f.width + '%'}"></div> -->
                     <div class="full"><b>{{scope.row.dps1.full}}</b></div>
                   </div>
                   <div class="factors">
-                    <div v-for="f of scope.row.dps2.factors" :key="f.factor" class="factor" :class="f.factor" :style="{width: f.width + '%'}"></div>
+                    <el-tooltip placement="top" :open-delay="200" v-for="f of scope.row.dps2.factors" :key="f.factor" class="factor bb" :class="f.factor" :style="{width: f.width + '%'}">
+                      <div slot="content"><span class="f-title">{{f.factor}}: </span>{{f.dps}}</div>
+                      <div></div> 
+                    </el-tooltip>
                     <div class="full">{{scope.row.dps2.full}}</div>
                   </div>
                 </div>
@@ -218,13 +220,13 @@ export default class DpsComponent extends Vue {
   .main .el-table .cell {
     font-size: 12px;
   }
-  .main .el-table .row-name .cell {
+  .main .el-table td.row-name .cell {
     line-height: 0px;
   }
-  .main .el-table .row-condition .cell {
+  .main .el-table td.row-condition .cell {
     margin-top: -15px;
   } 
-  .main .el-table .row-description .cell {
+  .main .el-table td.row-description .cell {
     margin-top: -15px;
   } 
 </style>
@@ -315,7 +317,7 @@ export default class DpsComponent extends Vue {
 
   .factors {
     height: 12px;
-    margin-right: 40px;
+    margin-right: 60px;
     position: relative;
     box-sizing: border-box;
     background-color: #f0f0f0; 
@@ -370,7 +372,7 @@ export default class DpsComponent extends Vue {
   }
 
   span.f-title {
-    color: #666;
+    color: #cccccc;
   }
 
 </style>
