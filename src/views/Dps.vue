@@ -181,6 +181,7 @@ export default class DpsComponent extends Vue {
   public async reload() {
     this.loading = true;
     await this.sleeep(200);
+    await this.$nextTick();
     if (this.csvUrl !== this.cachedCsvUrl) {
       const csv = await this.loadCsv();
       if (!csv) {
@@ -199,7 +200,8 @@ export default class DpsComponent extends Vue {
       }
     }
     this.filterd = this.adventurers.filter((a) => this.matched(a));
-    await this.sleeep(300);
+    await this.$nextTick();
+    await this.sleeep(200);
     this.loading = false;
   }
 
