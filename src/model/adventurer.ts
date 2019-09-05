@@ -26,6 +26,7 @@ export class Adventurer {
             adt.wyrmprint0 = wym[0] || '';
             adt.wyrmprint1 = wym[1] || '';
             adt.dragon = n[6].split('][')[1].replace(']', '');
+            adt.dragon = adt.dragon.replace(/;.*$/, '');
             adt.condition = n[7];
             adt.comment = n[8] || '';
             for (let i = 9; i < n.length; i++) {
