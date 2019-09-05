@@ -2,7 +2,7 @@
   <div class="main">
     <el-scrollbar class="main-scrollbar" :native="false">
       <el-table class="table-dps" :data="filterd" :border="false" style="width: 100%" v-loading="loading">
-        <el-table-column class-name="row-name"  prop="name" label="Adventurer" width="180">
+        <el-table-column class-name="row-name"  prop="name" label="Adventurer" width="172">
           <template slot-scope="scope">
             <el-tooltip placement="top" transition="none">
               <div slot="content">{{scope.row.name}}</div>
@@ -260,7 +260,7 @@ export default class DpsComponent extends Vue {
   }
   .main .el-table td {
     border-bottom: 0px!important;
-    padding: 2px 0px;
+    padding: 4px 0px;
   }
   .main .el-table .cell {
     font-size: 12px;
@@ -337,6 +337,11 @@ export default class DpsComponent extends Vue {
     margin-bottom: 27px;
   }
 
+  img.wyrmprint:after { 
+    content: "__";
+    display: block;
+    margin-top: 21px;
+  }
   div.adt-body {
     margin-left: 6px;
     text-align: left;
