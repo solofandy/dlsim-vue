@@ -188,6 +188,14 @@
           </el-checkbox>
         </el-checkbox-group>
       </div>
+      <div class="footer">
+        <div class="links mb-5">
+          <a href="https://github.com/b1ueb1ues/b1ueb1ues.github.io/blob/master/dl-sim/README.md">About</a>
+          <a class="pl-15" href="https://github.com/b1ueb1ues/b1ueb1ues.github.io/issues/new">Feedback</a>
+          <a class="pl-15" href="https://github.com/b1ueb1ues/b1ueb1ues.github.io/blob/master/dl-sim/amulet.csv">Wrymprints</a>
+        </div>
+        <div class="powerby mb-5">power by <a href="https://cn.vuejs.org/">Vue</a> and <a href="https://element.eleme.cn/">Element</a></div>
+      </div>
     </div>
   </div>
 </template>
@@ -368,6 +376,9 @@ export default class DpsComponent extends Vue {
   .mr-20 {
     margin-right: 20px!important;
   }
+  .pl-15 {
+    padding-left: 15px;
+  }
   .op-3 {
     opacity: 0.3!important;
   }
@@ -503,6 +514,37 @@ export default class DpsComponent extends Vue {
   .icon-rarity {
     width: 70px;
     line-height: 16px;
+  }
+
+  .aside .footer {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+  }
+
+  .aside .footer .powerby {
+    font-size: 10px;
+    color: #aaa;
+    width: 200px;
+    margin: auto;
+    text-align: center;
+  }
+  .aside .footer .powerby a {
+    color: #999;
+    text-decoration: none;
+  }
+
+  .aside .footer .links {
+    width: 200px;
+    margin: auto;
+    text-align: center;
+  }
+  .aside .footer .links a {
+    font-size: 11px;
+    color: #555;
   }
 
 </style>
