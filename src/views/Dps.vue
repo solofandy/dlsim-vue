@@ -2,7 +2,7 @@
   <div class="main">
     <el-scrollbar class="main-scrollbar" :native="false">
       <el-table class="table-dps" empty-text="empty" :data="filterd" :border="false" style="width: 100%" v-loading="loading">
-        <el-table-column class-name="row-name"  prop="name" label="Adventurer" width="172">
+        <el-table-column class-name="row-name" prop="name" label="Adventurer" width="200">
           <template slot-scope="scope">
             <el-tooltip placement="top" transition="none">
               <div slot="content">{{scope.row.name}}</div>
@@ -27,14 +27,14 @@
               <div>
                 <div class="factors mb-5">
                   <el-tooltip placement="top" transition="none" v-for="f of scope.row.dps1.factors" :key="f.factor" class="factor" :class="f.factor" :style="{width: f.width + '%'}">
-                    <div slot="content"><span class="f-title">{{f.factor}}: </span>{{f.dps}}</div>
+                    <div slot="content"><span class="f-title">{{f.category || f.factor}}: </span>{{f.dps}}</div>
                     <div></div> 
                   </el-tooltip>
                   <div class="full"><b>{{scope.row.dps1.full}}</b></div>
                 </div>
                 <div class="factors">
                   <el-tooltip placement="top" transition="none" v-for="f of scope.row.dps2.factors" :key="f.factor" class="factor" :class="f.factor" :style="{width: f.width + '%'}">
-                    <div slot="content"><span class="f-title">{{f.factor}}: </span>{{f.dps}}</div>
+                    <div slot="content"><span class="f-title">{{ f.category || f.factor}}: </span>{{f.dps}}</div>
                     <div class="op-3"></div> 
                   </el-tooltip>
                   <div class="full">{{scope.row.dps2.full}}</div>
@@ -49,8 +49,11 @@
       </el-table>
     </el-scrollbar>
     <div class="aside the-filter">
-      <div class="the-brand"><a href="https://github.com/b1ueb1ues/b1ueb1ues.github.io" target="_blank">DPS Sim @b1ueb1ues.github.io</a></div>
-      <div class="splitter"></div>
+      <div class="the-brand">
+        <img class="icon" src="https://b1ueb1ues.github.io/dl-sim/favicon.png">
+        <span>DPS Simulator</span>
+      </div>
+      <!-- <div class="splitter"></div> -->
       <div class="title">Mode</div>
       <div class="filter">
          <el-radio-group class="rg-filter" v-model="category" size="mini" @change="reload()">
@@ -60,7 +63,7 @@
             <el-radio-button label="sp" value="sp">Special</el-radio-button>
           </el-radio-group>
       </div>
-      <div class="splitter"></div>
+      <!-- <div class="splitter"></div> -->
       <div class="title">Co-abilities</div>
       <div class="filter">
         <el-checkbox-group class="cb-filter" v-model="exs" size="small" @change="reload()">
@@ -164,7 +167,7 @@ export default class DpsComponent extends Vue {
   // public weapon: string = 'all';
 
   public category: 'sp' | '60' | '120' | '180' = '180';
-  public exs: string[] = [];
+  public exs: string[] = ['k', 'r'];
   public rarities: string[] = ['5', '4', '3'];
   public elements: string[] = ['flame', 'water', 'wind', 'light', 'shadow'];
   public weapons: string[] = ['sword', 'blade', 'dagger', 'axe', 'lance', 'bow', 'wand'];
@@ -247,6 +250,9 @@ export default class DpsComponent extends Vue {
   #app {
     overflow-y: hidden;
   }
+  .table-dps .el-loading-mask {
+    background-color: rgba(255,255,255,.5);
+  }
   .d-f {
     display: inline-block!important;
   }
@@ -263,7 +269,7 @@ export default class DpsComponent extends Vue {
     opacity: 0.9!important;
   }
   .main {
-    padding: 0px!important;
+    padding: 0px;
     margin-top: 0;
     height: 100%;
     min-height: auto;
@@ -272,14 +278,14 @@ export default class DpsComponent extends Vue {
   .main-scrollbar {
     /* height: calc(100% - 80px); */
     height: 100vh;
-    margin-right: 330px;
+    margin-right: 300px;
   }
   
   .main-scrollbar .el-scrollbar__thumb {
-        background-color: rgba(144,147,153,.6);
+    background-color: rgba(144,147,153,.6);
   }
   .main-scrollbar .el-scrollbar__thumb:hover {
-        background-color: rgba(144,147,153,.8);
+    background-color: rgba(144,147,153,.8);
   }
   
   .main-scrollbar >.el-scrollbar__wrap {
@@ -288,40 +294,56 @@ export default class DpsComponent extends Vue {
   .table-dps {
     margin-bottom: 10px;
   }
-  .main .el-table td {
+  .table-dps.el-table td {
     border-bottom: 0px!important;
     padding: 4px 0px;
   }
-  .main .el-table .cell {
+  .table-dps tr th:first-child,
+  .table-dps tr td:first-child {
+    padding-left: 30px;
+  }
+  .table-dps tr th:last-child,
+  .table-dps tr td:last-child {
+    padding-right: 30px;
+  }
+  .table-dps .el-table .cell {
     font-size: 12px;
   }
-  .main .el-table td.row-name .cell {
+  .table-dps .el-table td.row-name .cell {
     line-height: 0px;
   }
-  .main .el-table td.row-condition .cell {
+  .table-dps .el-table td.row-condition .cell {
     margin-top: -15px;
   } 
-  .main .el-table td.row-description .cell {
+  .table-dps .el-table td.row-description .cell {
     margin-top: -15px;
   }
   
   .aside {
-    width: 320px;
+    width: 270px;
+    padding-left: 30px;
     position: fixed;
     top: 0;
     right: 0;
     bottom: 0;
-    /* background: #f0f0f0; */
+    font-size: 14px!important;
     border-left: 1px solid #eee;
   }
   
   .aside .the-brand {
-    font-size: 16px;
-    margin: 6px 0px;
+    display: flex;
+    width: 130px;
+    align-items: center;
+    margin: 20px auto;
   }
-  
-  .aside .the-brand a {
-    text-decoration: none;
+  .aside .the-brand .icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+  .aside .the-brand span {
+    font-size: 12px;
+    font-weight: 700;
   }
   
   .cb-filter {
@@ -345,18 +367,14 @@ export default class DpsComponent extends Vue {
   .cb-filter .el-checkbox__label {
     padding-left: 5px!important;
   }
-  
-  .the-filter {
-    padding-left: 10px;
-    font-size: 14px!important;
-  }
+
   .the-filter .splitter {
     height: 1px;
     background: #eee;
     padding: 0px;
     margin-top: 20px;
     margin-bottom: 20px;
-    margin-left: -10px!important;
+    margin-left: -30px!important;
   }
   
   .the-filter .title {
