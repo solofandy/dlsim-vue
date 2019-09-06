@@ -2,24 +2,26 @@
   <div class="main">
     <el-scrollbar class="main-scrollbar" :native="false">
       <el-table class="table-dps" empty-text="empty" :data="filterd" :border="false" style="width: 100%" v-loading="loading">
-        <el-table-column class-name="row-name" prop="name" label="Adventurer" width="200">
+        <el-table-column class-name="row-name" prop="name" label="Adventurer" width="215">
           <template slot-scope="scope">
-            <el-tooltip placement="top" transition="none">
-              <div slot="content">{{scope.row.name}}</div>
-              <img class="d-f avater" :src='"https://b1ueb1ues.github.io/dl-sim/pic/character/" + scope.row.name + ".png"'>
-            </el-tooltip>
-            <el-tooltip placement="top" transition="none">
-              <div slot="content">{{scope.row.dragon}}</div>
-              <img class="d-f wyrmprint" :src='"https://b1ueb1ues.github.io/dl-sim/pic/dragon/" + scope.row.dragon + ".png"'>
-            </el-tooltip>
-            <el-tooltip placement="top" transition="none">
-              <div slot="content">{{scope.row.wyrmprint0}}</div>
-              <img class="d-f wyrmprint" :src='"https://b1ueb1ues.github.io/dl-sim/pic/amulet/" + scope.row.wyrmprint0 + ".png"'>
-            </el-tooltip>
-            <el-tooltip placement="top" transition="none">
-              <div slot="content">{{scope.row.wyrmprint1}}</div>
-              <img class="d-f wyrmprint" :src='"https://b1ueb1ues.github.io/dl-sim/pic/amulet/" + scope.row.wyrmprint1 + ".png"'>
-            </el-tooltip>
+            <div class="dfac">
+              <el-tooltip placement="top" transition="none">
+                <div slot="content">{{scope.row.name}}</div>
+                <img class="d-f avater" :src='"https://b1ueb1ues.github.io/dl-sim/pic/character/" + scope.row.name + ".png"'>
+              </el-tooltip>
+              <el-tooltip placement="top" transition="none">
+                <div slot="content">{{scope.row.dragon}}</div>
+                <img class="d-f wyrmprint" :src='"https://b1ueb1ues.github.io/dl-sim/pic/dragon/" + scope.row.dragon + ".png"'>
+              </el-tooltip>
+              <el-tooltip placement="top" transition="none">
+                <div slot="content">{{scope.row.wyrmprint0}}</div>
+                <img class="d-f wyrmprint" :src='"https://b1ueb1ues.github.io/dl-sim/pic/amulet/" + scope.row.wyrmprint0 + ".png"'>
+              </el-tooltip>
+              <el-tooltip placement="top" transition="none">
+                <div slot="content">{{scope.row.wyrmprint1}}</div>
+                <img class="d-f wyrmprint" :src='"https://b1ueb1ues.github.io/dl-sim/pic/amulet/" + scope.row.wyrmprint1 + ".png"'>
+              </el-tooltip>
+            </div>
           </template>
         </el-table-column>
         <el-table-column prop="rarity" label="DPS Distribution" min-width="400">
@@ -28,14 +30,14 @@
                 <div class="factors mb-5">
                   <el-tooltip placement="top" transition="none" v-for="f of scope.row.dps1.factors" :key="f.factor" class="factor" :class="f.factor" :style="{width: f.width + '%'}">
                     <div slot="content"><span class="f-title">{{f.category || f.factor}}: </span>{{f.dps}}</div>
-                    <div></div> 
+                    <div></div>
                   </el-tooltip>
                   <div class="full"><b>{{scope.row.dps1.full}}</b></div>
                 </div>
                 <div class="factors">
                   <el-tooltip placement="top" transition="none" v-for="f of scope.row.dps2.factors" :key="f.factor" class="factor" :class="f.factor" :style="{width: f.width + '%'}">
                     <div slot="content"><span class="f-title">{{ f.category || f.factor}}: </span>{{f.dps}}</div>
-                    <div class="op-3"></div> 
+                    <div class="op-3"></div>
                   </el-tooltip>
                   <div class="full">{{scope.row.dps2.full}}</div>
                 </div>
@@ -53,7 +55,42 @@
         <img class="icon" src="https://b1ueb1ues.github.io/dl-sim/favicon.png">
         <span>DPS Simulator</span>
       </div>
-      <!-- <div class="splitter"></div> -->
+      <div class="title">Legend</div>
+      <div class="legend" style="line-height: 25px;">
+        <div class="dib">
+          <span class="dib"><div class="indic attack"></div></span>
+          <span class="dib"><div class="label">Atk</div></span>
+        </div>
+        <div class="dib">
+          <span class="dib"><div class="indic skill_1"></div></span>
+          <span class="dib"><div class="label">S1</div></span>
+        </div>
+        <div class="dib">
+          <span class="dib"><div class="indic skill_2"></div></span>
+          <span class="dib"><div class="label">S2</div></span>
+        </div>
+        <div class="dib">
+          <span class="dib"><div class="indic skill_3"></div></span>
+          <span class="dib"><div class="label">S3</div></span>
+        </div>
+        <div class="dib">
+          <span class="dib"><div class="indic force_strike"></div></span>
+          <span class="dib"><div class="label">FS</div></span>
+        </div>
+        <div class="dib">
+          <span class="dib"><div class="indic team_buff"></div></span>
+          <span class="dib"><div class="label">Buff</div></span>
+        </div>
+        <div class="dib">
+          <span class="dib"><div class="indic bleed"></div></span>
+          <span class="dib"><div class="label">Bleed</div></span>
+        </div>
+        <div class="dib">
+          <span class="dib"><div class="indic other"></div></span>
+          <span class="dib"><div class="label">Others</div></span>
+        </div>
+      </div>
+      <div class="splitter"></div>
       <div class="title">Mode</div>
       <div class="filter">
          <el-radio-group class="rg-filter" v-model="category" size="mini" @change="reload()">
@@ -253,14 +290,24 @@ export default class DpsComponent extends Vue {
   .table-dps .el-loading-mask {
     background-color: rgba(255,255,255,.5);
   }
-  .d-f {
+  /* .d-f {
     display: inline-block!important;
+  } */
+  .dfac {
+    display: flex!important;
+    align-items: center;
+  }
+  .dib {
+    display: inline-block;
   }
   .mb-5 {
     margin-bottom: 5px!important;
   }
   .mt-5 {
     margin-top: 5px!important;
+  }
+  .mr-20 {
+    margin-right: 20px!important;
   }
   .op-3 {
     opacity: 0.3!important;
@@ -280,14 +327,14 @@ export default class DpsComponent extends Vue {
     height: 100vh;
     margin-right: 300px;
   }
-  
+
   .main-scrollbar .el-scrollbar__thumb {
     background-color: rgba(144,147,153,.6);
   }
   .main-scrollbar .el-scrollbar__thumb:hover {
     background-color: rgba(144,147,153,.8);
   }
-  
+
   .main-scrollbar >.el-scrollbar__wrap {
     overflow-x: auto;
   }
@@ -309,16 +356,16 @@ export default class DpsComponent extends Vue {
   .table-dps .el-table .cell {
     font-size: 12px;
   }
-  .table-dps .el-table td.row-name .cell {
+  .table-dps.el-table td.row-name .cell {
     line-height: 0px;
   }
-  .table-dps .el-table td.row-condition .cell {
-    margin-top: -15px;
-  } 
-  .table-dps .el-table td.row-description .cell {
+  .table-dps.el-table td.row-condition .cell {
     margin-top: -15px;
   }
-  
+  .table-dps.el-table td.row-description .cell {
+    margin-top: -15px;
+  }
+
   .aside {
     width: 270px;
     padding-left: 30px;
@@ -329,7 +376,7 @@ export default class DpsComponent extends Vue {
     font-size: 14px!important;
     border-left: 1px solid #eee;
   }
-  
+
   .aside .the-brand {
     display: flex;
     width: 130px;
@@ -345,19 +392,19 @@ export default class DpsComponent extends Vue {
     font-size: 12px;
     font-weight: 700;
   }
-  
+
   .cb-filter {
     line-height: 25px;
   }
-  
+
   .rg-filter .el-radio-button--mini .el-radio-button__inner {
     font-size: 13px;
   }
-  
+
   .cb-filter .el-checkbox {
     margin-right: 20px!important;
   }
-  
+
   .cb-filter .el-checkbox:last-child {
     margin-right: 0px!important;
   }
@@ -376,13 +423,13 @@ export default class DpsComponent extends Vue {
     margin-bottom: 20px;
     margin-left: -30px!important;
   }
-  
+
   .the-filter .title {
     font-weight: 500;
     margin-top: 25px;
     margin-bottom: 10px;
   }
-  
+
   .icon-weapon,
   .icon-element,
   .icon-weapon {
@@ -395,7 +442,7 @@ export default class DpsComponent extends Vue {
     width: 70px;
     line-height: 16px;
   }
-  
+
 </style>
 
 <style scoped lang="css">
@@ -403,19 +450,20 @@ export default class DpsComponent extends Vue {
   img.avater {
     width: 60px;
     height: 60px;
+    margin-right: 5px;
   }
 
   img.wyrmprint {
+    margin-left: 5px;
     width: 30px;
     height: 30px;
-    margin-bottom: 27px;
   }
 
-  img.wyrmprint:after { 
+  /* img.wyrmprint:after {
     content: "__";
     display: block;
     margin-top: 21px;
-  }
+  } */
   div.adt-body {
     margin-left: 6px;
     text-align: left;
@@ -431,17 +479,17 @@ export default class DpsComponent extends Vue {
     margin-right: 60px;
     position: relative;
     box-sizing: border-box;
-    background-color: #f0f0f0; 
+    background-color: #f0f0f0;
   }
 
   .factors .factor {
-    background-color: #228fbd;
+    background-color: #12b886;
     float: left;
     box-sizing: border-box;
     height: 12px;
     border-left: 1px solid #f0f0f0;
   }
-  
+
   .factors .factor:hover {
     cursor: pointer;
   }
@@ -453,23 +501,45 @@ export default class DpsComponent extends Vue {
     font-size: 12px;
     line-height: 12px;
   }
-  .factor.attack {
-    background-color: #228be6;
+  .attack {
+    background-color: #228be6!important;
   }
-  .factor.force_strike {
-    background-color: #40c057;
+  .skill_1 {
+    background-color: #40c057!important;
   }
-  .factor.skill_1 {
-    background-color: #fab005;
+  .skill_2 {
+    background-color: #fab005!important;
   }
-  .factor.skill_2 {
-    background-color: #f76707;
+  .skill_3 {
+    background-color: #f76707!important;
   }
-  .factor.skill_3 {
-    background-color: #e64980;
+  .bleed {
+    background-color: #e64980!important;
   }
-  .factor.team_buff {
-    background-color: #15aabf;
+  .force_strike {
+    background-color: #15aabf!important;
+  }
+  .team_buff {
+    background-color: #7950f2!important;
+  }
+  .other {
+    background-color: #12b886!important;
+  }
+
+  .legend {
+    cursor: pointer;
+  }
+
+  .legend .indic {
+    height: 14px;
+    width: 14px;
+    border-radius: 2px;
+    margin-bottom: -2px;
+  }
+  .legend .label {
+    width: 40px;
+    margin-left: 5px;
+    font-size: 12px;
   }
 
   .factors-detail p {

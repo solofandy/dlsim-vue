@@ -1,12 +1,12 @@
 import { TimeSelect } from 'element-ui';
 
 const NAME_MAP: any = {
-    attack: 'Atk',
-    force_strike: 'Fs',
-    skill_1: 'S1',
-    skill_2: 'S2',
-    skill_3: 'S3',
-    team_buff: 'Buff',
+    attack: 'atk',
+    force_strike: 'fs',
+    skill_1: 's1',
+    skill_2: 's2',
+    skill_3: 's3',
+    team_buff: 'buff',
 };
 
 export class DpsFactor {
