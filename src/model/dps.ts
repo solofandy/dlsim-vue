@@ -6,4 +6,9 @@ export class Dps {
 
     public factors: DpsFactor[] = [];
 
+    public filterd: DpsFactor[] = [];
+
+    public get all() {
+        return this.filterd.reduce((sum, f) => sum += f.dps, 0);
+    }
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="main">
-    <el-scrollbar class="main-scrollbar" :native="false">
-      <el-table class="table-dps" empty-text="empty" :data="filterd" :border="false" style="width: 100%" v-loading="loading">
+    <el-scrollbar class="main-scrollbar" :native="false" v-loading="loading" element-loading-spinner="el-icon-loading" element-loading-text="loading...">
+      <el-table class="table-dps" empty-text="empty" :data="filterd" :border="false" style="width: 100%">
         <el-table-column class-name="row-name" prop="name" label="Adventurer" width="215">
           <template slot-scope="scope">
             <div class="dfac">
@@ -28,18 +28,18 @@
           <template slot-scope="scope">
               <div>
                 <div class="factors mb-5">
-                  <el-tooltip placement="top" transition="none" v-for="f of scope.row.dps1.factors" :key="f.factor" class="factor" :class="f.factor" :style="{width: f.width + '%'}">
-                    <div slot="content"><span class="f-title">{{f.category || f.factor}}: </span>{{f.dps}}</div>
+                  <el-tooltip placement="top" transition="none" v-for="f of scope.row.dps1.filterd" :key="f.factor" class="factor" :class="'c-' + f.category" :style="{width: f.width + '%'}">
+                    <div slot="content"><span class="f-title">{{f.category !== 'others' ? f.category : f.factor}}: </span>{{f.dps}}</div>
                     <div></div>
                   </el-tooltip>
-                  <div class="full"><b>{{scope.row.dps1.full}}</b></div>
+                  <div class="full"><b>{{scope.row.dps1.all}}</b></div>
                 </div>
                 <div class="factors">
-                  <el-tooltip placement="top" transition="none" v-for="f of scope.row.dps2.factors" :key="f.factor" class="factor" :class="f.factor" :style="{width: f.width + '%'}">
-                    <div slot="content"><span class="f-title">{{ f.category || f.factor}}: </span>{{f.dps}}</div>
+                  <el-tooltip placement="top" transition="none" v-for="f of scope.row.dps2.filterd" :key="f.factor" class="factor" :class="'c-' + f.category" :style="{width: f.width + '%'}">
+                    <div slot="content"><span class="f-title">{{f.category !== 'others' ? f.category : f.factor}}: </span>{{f.dps}}</div>
                     <div class="op-3"></div>
                   </el-tooltip>
-                  <div class="full">{{scope.row.dps2.full}}</div>
+                  <div class="full">{{scope.row.dps2.all}}</div>
                 </div>
               </div>
           </template>
@@ -57,38 +57,38 @@
       </div>
       <div class="title">Legend</div>
       <div class="legend" style="line-height: 25px;">
-        <div class="dib">
-          <span class="dib"><div class="indic attack"></div></span>
-          <span class="dib"><div class="label">Atk</div></span>
+        <div class="dib" v-for="(c) in allDpsCategories" :key="c" @click="toggleFactor(c)" :class="{'c-gray': !dpsCategories.includes(c)}">
+          <span class="dib"><div class="indic" :class="'c-' + c"></div></span>
+          <span class="dib"><div class="label">{{ c }}</div></span>
         </div>
-        <div class="dib">
-          <span class="dib"><div class="indic skill_1"></div></span>
+        <!-- <div class="dib">
+          <span class="dib"><div class="indic c-s1"></div></span>
           <span class="dib"><div class="label">S1</div></span>
         </div>
         <div class="dib">
-          <span class="dib"><div class="indic skill_2"></div></span>
+          <span class="dib"><div class="indic c-s2"></div></span>
           <span class="dib"><div class="label">S2</div></span>
         </div>
         <div class="dib">
-          <span class="dib"><div class="indic skill_3"></div></span>
+          <span class="dib"><div class="indic c-s3"></div></span>
           <span class="dib"><div class="label">S3</div></span>
         </div>
         <div class="dib">
-          <span class="dib"><div class="indic force_strike"></div></span>
+          <span class="dib"><div class="indic c-fs"></div></span>
           <span class="dib"><div class="label">FS</div></span>
         </div>
         <div class="dib">
-          <span class="dib"><div class="indic team_buff"></div></span>
+          <span class="dib"><div class="indic c-buff"></div></span>
           <span class="dib"><div class="label">Buff</div></span>
         </div>
         <div class="dib">
-          <span class="dib"><div class="indic bleed"></div></span>
+          <span class="dib"><div class="indic c-bleed"></div></span>
           <span class="dib"><div class="label">Bleed</div></span>
         </div>
         <div class="dib">
-          <span class="dib"><div class="indic other"></div></span>
+          <span class="dib"><div class="indic c-others"></div></span>
           <span class="dib"><div class="label">Others</div></span>
-        </div>
+        </div> -->
       </div>
       <div class="splitter"></div>
       <div class="title">Mode</div>
@@ -119,7 +119,10 @@
         </el-checkbox-group>
       </div>
       <div class="splitter"></div>
-      <div class="title">Rarity</div>
+      <div class="title">
+        Rarity
+        <span><a class="toggle" @click="toggleRarity()">{{ rarities.length === 0 ? 'all' : 'reset' }}</a></span>
+      </div>
       <div class="filter">
         <el-checkbox-group class="cb-filter" v-model="rarities" size="mini" @change="reload()">
           <el-checkbox label="5">
@@ -133,7 +136,10 @@
           </el-checkbox>
         </el-checkbox-group>
       </div>
-      <div class="title">Element</div>
+      <div class="title">
+        Element
+        <span><a class="toggle" @click="toggleElement()">{{ elements.length === 0 ? 'all' : 'reset' }}</a></span>
+      </div>
       <div class="filter">
         <el-checkbox-group class="cb-filter" v-model="elements" size="mini" @change="reload()">
           <el-checkbox label="flame">
@@ -153,7 +159,10 @@
           </el-checkbox>
         </el-checkbox-group>
       </div>
-      <div class="title">Class</div>
+      <div class="title">
+        Class
+        <span><a class="toggle" @click="toggleWeapon()">{{ weapons.length === 0 ? 'all' : 'reset' }}</a></span>
+      </div>
       <div class="filter">
         <el-checkbox-group class="cb-filter" v-model="weapons" size="mini" @change="reload()">
           <el-checkbox label="sword">
@@ -209,6 +218,9 @@ export default class DpsComponent extends Vue {
   public elements: string[] = ['flame', 'water', 'wind', 'light', 'shadow'];
   public weapons: string[] = ['sword', 'blade', 'dagger', 'axe', 'lance', 'bow', 'wand'];
 
+  public allDpsCategories: string[] = ['atk', 's1', 's2', 's3', 'fs', 'buff', 'bleed', 'others'];
+  public dpsCategories: string[] = ['atk', 's1', 's2', 's3', 'fs', 'buff', 'bleed', 'others'];
+
   // public thatAdventurer: Adventurer = new Adventurer();
   // public thatDps: Dps = new Dps();
 
@@ -249,6 +261,53 @@ export default class DpsComponent extends Vue {
     // @ts-ignore
     window.$dps = this;
     this.reload();
+  }
+
+  private toggleRarity() {
+    if (this.rarities.length === 0) {
+      this.rarities = ['5', '4', '3'];
+    } else {
+      this.rarities = [];
+    }
+    this.reload();
+  }
+
+  private toggleElement() {
+    if (this.elements.length === 0) {
+      this.elements = ['flame', 'water', 'wind', 'light', 'shadow'];
+    } else {
+      this.elements = [];
+    }
+    this.reload();
+  }
+
+  private toggleWeapon() {
+    if (this.weapons.length === 0) {
+      this.weapons =  ['sword', 'blade', 'dagger', 'axe', 'lance', 'bow', 'wand'];
+    } else {
+      this.weapons = [];
+    }
+    this.reload();
+  }
+
+  private async toggleFactor(category: string) {
+    this.loading = true;
+    await this.sleeep(200);
+    await this.$nextTick();
+
+    const k = this.dpsCategories.indexOf(category);
+    if (k < 0) {
+      this.dpsCategories.push(category);
+    } else {
+      this.dpsCategories.splice(k, 1);
+    }
+    this.filterd.forEach((a) => {
+      a.filterDpsFactors(this.dpsCategories);
+    });
+    Adventurer.sort(this.filterd);
+    await this.$nextTick();
+    await this.sleeep(200);
+    this.loading = false;
   }
 
   private sleeep(ms: number): Promise<boolean> {
@@ -359,12 +418,6 @@ export default class DpsComponent extends Vue {
   .table-dps.el-table td.row-name .cell {
     line-height: 0px;
   }
-  .table-dps.el-table td.row-condition .cell {
-    margin-top: -15px;
-  }
-  .table-dps.el-table td.row-description .cell {
-    margin-top: -15px;
-  }
 
   .aside {
     width: 270px;
@@ -428,6 +481,15 @@ export default class DpsComponent extends Vue {
     font-weight: 500;
     margin-top: 25px;
     margin-bottom: 10px;
+  }
+
+  .the-filter .title .toggle {
+    font-size: 12px;
+    color: #409eff;
+    cursor: pointer;
+    font-weight: 400;
+    margin-left: 10px;
+    text-decoration: underline;
   }
 
   .icon-weapon,
@@ -501,29 +563,32 @@ export default class DpsComponent extends Vue {
     font-size: 12px;
     line-height: 12px;
   }
-  .attack {
+  .c-atk {
     background-color: #228be6!important;
   }
-  .skill_1 {
+  .c-s1 {
     background-color: #40c057!important;
   }
-  .skill_2 {
+  .c-s2 {
     background-color: #fab005!important;
   }
-  .skill_3 {
+  .c-s3 {
     background-color: #f76707!important;
   }
-  .bleed {
+  .c-bleed {
     background-color: #e64980!important;
   }
-  .force_strike {
+  .c-fs {
     background-color: #15aabf!important;
   }
-  .team_buff {
+  .c-buff {
     background-color: #7950f2!important;
   }
-  .other {
+  .c-others {
     background-color: #12b886!important;
+  }
+  .c-gray {
+    opacity: 0.2!important;
   }
 
   .legend {

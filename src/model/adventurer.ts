@@ -34,6 +34,7 @@ export class Adventurer {
                 adt.dps1.factors.push(new DpsFactor(df[0], parseInt(df[1], 10) || 0));
             }
             adt.dps1.factors = adt.dps1.factors.filter((f) => f.dps > 0);
+            adt.dps1.filterd = adt.dps1.factors;
             return adt;
         } catch (e) {
             return undefined;
@@ -55,6 +56,14 @@ export class Adventurer {
         return result;
     }
 
+    public static sort(adventurers: Adventurer[]) {
+        adventurers.sort((p, q) => {
+            const pp = p.dps1.all;
+            const qq = q.dps1.all;
+            return pp > qq ? -1 : pp === qq ? 0 : 1;
+        });
+    }
+
     // public dps_full: number = 0;
     public name: string = '';
     public rarity: string = '';
@@ -72,8 +81,15 @@ export class Adventurer {
     public findDps2(rawAdventurers: Adventurer[]) {
         const adt = rawAdventurers.find((a) => a.name === `_c_${this.name}`);
         if (adt) {
-            this.dps2 = {...adt.dps1};
+            this.dps2.full = adt.dps1.full;
+            this.dps2.factors = adt.dps1.factors;
+            this.dps2.filterd = adt.dps1.filterd;
         }
+    }
+
+    public filterDpsFactors(categories: string[] = []) {
+        this.dps1.filterd = this.dps1.factors.filter((f) => categories.includes(f.category));
+        this.dps2.filterd = this.dps2.factors.filter((f) => categories.includes(f.category));
     }
 }
 
