@@ -1,7 +1,7 @@
 <template>
   <div class="main">
-    <el-scrollbar class="main-scrollbar" :native="false" v-loading="loading" element-loading-spinner="el-icon-loading" element-loading-text="loading...">
-      <el-table class="table-dps" empty-text="empty" :data="filterd" :border="false" style="width: 100%">
+    <div class="main-scrollbar" v-loading="loading" element-loading-spinner="el-icon-loading" element-loading-text="loading...">
+      <el-table class="table-dps" empty-text="empty" :data="filterd" :border="false">
         <el-table-column class-name="row-name" prop="name" label="Adventurer" width="215">
           <template slot-scope="scope">
             <div class="dfac">
@@ -49,7 +49,7 @@
         <el-table-column class-name="row-description"  prop="comment" label="Description" width="200">
         </el-table-column>
       </el-table>
-    </el-scrollbar>
+    </div>
     <div class="aside the-filter">
       <div class="the-brand">
         <img class="icon" src="https://b1ueb1ues.github.io/dl-sim/favicon.png">
@@ -121,7 +121,7 @@
       <div class="splitter"></div>
       <div class="title">
         Rarity
-        <span><a class="toggle" @click="toggleRarity()">{{ rarities.length === 0 ? 'all' : 'reset' }}</a></span>
+        <span v-if="rarities.length > 0"><a class="toggle" @click="toggleRarity()">reset</a></span>
       </div>
       <div class="filter">
         <el-checkbox-group class="cb-filter" v-model="rarities" size="mini" @change="reload()">
@@ -138,7 +138,7 @@
       </div>
       <div class="title">
         Element
-        <span><a class="toggle" @click="toggleElement()">{{ elements.length === 0 ? 'all' : 'reset' }}</a></span>
+        <span v-if="elements.length > 0"><a class="toggle" @click="toggleElement()">reset</a></span>
       </div>
       <div class="filter">
         <el-checkbox-group class="cb-filter" v-model="elements" size="mini" @change="reload()">
@@ -161,7 +161,7 @@
       </div>
       <div class="title">
         Class
-        <span><a class="toggle" @click="toggleWeapon()">{{ weapons.length === 0 ? 'all' : 'reset' }}</a></span>
+        <span v-if="weapons.length > 0"><a class="toggle" @click="toggleWeapon()">reset</a></span>
       </div>
       <div class="filter">
         <el-checkbox-group class="cb-filter" v-model="weapons" size="mini" @change="reload()">
@@ -194,7 +194,7 @@
           <a class="pl-15" href="https://github.com/b1ueb1ues/b1ueb1ues.github.io/issues/new">Feedback</a>
           <a class="pl-15" href="https://github.com/b1ueb1ues/b1ueb1ues.github.io/blob/master/dl-sim/amulet.csv">Wrymprints</a>
         </div>
-        <div class="powerby mb-5">power by <a href="https://cn.vuejs.org/">Vue</a> and <a href="https://element.eleme.cn/">Element</a></div>
+        <div class="powerby mb-5">powered by <a href="https://cn.vuejs.org/">Vue</a> and <a href="https://element.eleme.cn/">Element</a></div>
       </div>
     </div>
   </div>
@@ -351,9 +351,6 @@ export default class DpsComponent extends Vue {
 </script>
 
 <style>
-  #app {
-    overflow-y: hidden;
-  }
   .table-dps .el-loading-mask {
     background-color: rgba(255,255,255,.5);
   }
@@ -396,18 +393,19 @@ export default class DpsComponent extends Vue {
     /* height: calc(100% - 80px); */
     height: 100vh;
     margin-right: 300px;
+    overflow: auto;
   }
 
-  .main-scrollbar .el-scrollbar__thumb {
+  /* .main-scrollbar .el-scrollbar__thumb {
     background-color: rgba(144,147,153,.6);
   }
   .main-scrollbar .el-scrollbar__thumb:hover {
     background-color: rgba(144,147,153,.8);
-  }
+  } */
 
-  .main-scrollbar >.el-scrollbar__wrap {
+  /* .main-scrollbar >.el-scrollbar__wrap {
     overflow-x: auto;
-  }
+  } */
   .table-dps {
     margin-bottom: 10px;
   }
