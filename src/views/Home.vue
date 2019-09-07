@@ -1,129 +1,35 @@
 <template>
-  <div>
-    <el-row class="container">
-      <el-col :span="24" class="header">
-        <div class="the-brand"><a href="https://github.com/b1ueb1ues/b1ueb1ues.github.io" target="_blank">DPS Sim @b1ueb1ues.github.io</a></div>
-        <ul class="head-bar">
-          <li>
-            <el-radio-group v-model="category" size="mini" @change="reload()">
-              <el-radio-button label="sp" value="sp">Special</el-radio-button>
-              <el-radio-button label="60">60s</el-radio-button>
-              <el-radio-button label="120">120s</el-radio-button>
-              <el-radio-button label="180">180s</el-radio-button>
-            </el-radio-group>
-          </li>
-          <li class="label">
-            <span>Rarity:</span>
-          </li>
-          <li>
-            <el-select v-model="rarity" size="mini" style="width: 100px;" @change="reload()">
-              <el-option value="all" label="All"></el-option>
-              <el-option value="5" label="5 Stars"></el-option>
-              <el-option value="4" label="4 Stars"></el-option>
-              <el-option value="3" label="3 Stars"></el-option>
-            </el-select>
-          </li>
-          <li class="label">
-            <span>Element:</span>
-          </li>
-          <li>
-            <el-select v-model="element" size="mini" style="width: 100px;" @change="reload()">
-              <el-option value="all" label="All"></el-option>
-              <el-option value="flame" label="Flame"></el-option>
-              <el-option value="water" label="Water"></el-option>
-              <el-option value="wind" label="Wind"></el-option>
-              <el-option value="light" label="Light"></el-option>
-              <el-option value="shadow" label="Shadow"></el-option>
-            </el-select>
-          </li>
-          <li class="label">
-            <span>Class:</span>
-          </li>
-          <li>
-            <el-select v-model="weapon" size="mini" style="width: 100px;" @change="reload()">
-              <el-option value="all" label="All"></el-option>
-              <el-option value="sword" label="Sword"></el-option>
-              <el-option value="blade" label="Blade"></el-option>
-              <el-option value="dagger" label="Dagger"></el-option>
-              <el-option value="axe" label="axe"></el-option>
-              <el-option value="lance" label="Lance"></el-option>
-              <el-option value="bow" label="Bow"></el-option>
-              <el-option value="wand" label="Wand"></el-option>
-            </el-select>
-          </li>
-          <li>
-            <dir class="sep"></dir>
-          </li>
-          <li>
-            <span>Co-abilities:</span>
-          </li>
-          <li>
-            <el-checkbox-group v-model="exs" size="mini" @change="reload()">
-              <el-checkbox label="k">
-                <img class="icon-weapon" src="https://b1ueb1ues.github.io/dl-sim/pic/weapon/blade.png" alt="K"/>
-              </el-checkbox>
-              <el-checkbox label="r">
-                <img class="icon-weapon" src="https://b1ueb1ues.github.io/dl-sim/pic/weapon/wand.png" alt="K"/>
-              </el-checkbox>
-              <el-checkbox label="d">
-                <img class="icon-weapon" src="https://b1ueb1ues.github.io/dl-sim/pic/weapon/dagger.png" alt="K"/>
-              </el-checkbox>
-              <el-checkbox label="b">
-                <img class="icon-weapon" src="https://b1ueb1ues.github.io/dl-sim/pic/weapon/bow.png" alt="K"/>
-              </el-checkbox>
-            </el-checkbox-group>
-          </li>
-        </ul>
-      </el-col>
-    </el-row>
-    <el-row class="container">
-      <el-col :span="24" class="main">
-        <div class="adt-holder">
-          <ul class="infinite-list" v-infinite-scroll="load" :style="{height: ulHeight}">
-            <li v-for="(adt) of rendered" :key="adt.name" class="infinite-list-item adt">
-              <div><img class="avater" :alt="adt.name" :src='"https://b1ueb1ues.github.io/dl-sim/pic/character/" + adt.name + ".png"'></div>
-              <div>
-                <div><img class="wyrmprint" :src='"https://b1ueb1ues.github.io/dl-sim/pic/amulet/" + adt.wyrmprint0 + ".png"'></div>
-                <div><img class="wyrmprint" :src='"https://b1ueb1ues.github.io/dl-sim/pic/amulet/" + adt.wyrmprint1 + ".png"'></div>
-              </div>
-              <div class="adt-body">
-                <div class="comment">[{{adt.dragon}}]{{ adt.comment ? '  - ' + adt.comment : ''}}</div>
-                <div class="factors">
-                  <div @mouseenter="viewFactors(adt, adt.dps1, $event)" v-for="f of adt.dps1.factors" :key="f.factor" class="factor bb" :class="f.factor" :style="{width: f.width + 'px'}"></div>
-                  <div class="full" >{{adt.dps1.full}}</div>
-                </div>
-                <div class="factors">
-                  <div @mouseenter="viewFactors(adt, adt.dps2, $event)" v-for="f of adt.dps2.factors" :key="f.factor" class="factor" :class="f.factor" :style="{width: f.width + 'px'}"></div>
-                  <div class="full" >{{adt.dps2.full}}</div>
-                </div>
-              </div>
-            </li>
-          </ul>
-          <p v-if="adventurerLoading">loading...</p>
-        </div>
-      </el-col>
-    </el-row>
-     <el-popover popper-class="factors-detail" ref="factors" trigger="manual" visible-arrow="false">  <!-- @click.native="closeDetail()"> -->
-      <div class="">
-        <span style="float: right; font-size: 18px; color: #999; cursor: pointer;" @click="closeDetail()">&times;</span>
-        <div style="display: inline-block;">
-          <img class="avater" :alt="thatAdventurer.name" :src='"https://b1ueb1ues.github.io/dl-sim/pic/character/" + thatAdventurer.name + ".png"'>
-        </div>
-        <div style="display: inline-block;">
-          <div><img class="wyrmprint" :src='"https://b1ueb1ues.github.io/dl-sim/pic/amulet/" + thatAdventurer.wyrmprint0 + ".png"'></div>
-          <div><img class="wyrmprint" :src='"https://b1ueb1ues.github.io/dl-sim/pic/amulet/" + thatAdventurer.wyrmprint1 + ".png"'></div>
-        </div>
-        <p><b>{{thatAdventurer.name}}</b></p>
-        <p v-if="thatAdventurer.comment ">{{thatAdventurer.comment}}</p>
-        <p v-if="thatAdventurer.dps1.full === thatDps.full">{{thatAdventurer.condition}}</p>
-        <p v-for="(f) of thatDps.factors" :key="f.factor">
-          <span class="f-title">{{f.factor}}: </span>{{f.dps}}
-        </p>
+  <div class="main">
+    <div class="holder">
+      <div class="mb-5">
+        <div class="dib attack" style="width: 200px;">1</div>
+        <div class="dib skill_1" style="min-width: 400px; width: calc(100% - 601px);">2</div>
+        <div class="dib fr skill_3" style="width: 200px;" >4</div>
+        <div class="dib fr skill_2" style="width: 200px;" >3</div>
       </div>
-      <!-- <el-button slot="reference" @click="detailPopover = !detailPopover">手动激活</el-button> -->
-    </el-popover>
+      
+      <div class="mb-5">
+        <div class="dib attack" style="width: 200px;">1</div>
+        <div class="dib skill_1" style="min-width: 400px; width: calc(100% - 601px);">2</div>
+        <div class="dib fr skill_3" style="width: 200px;" >4</div>
+        <div class="dib fr skill_2" style="width: 200px;" >3</div>
+      </div>
+      
+      <div class="mb-5">
+        <div class="dib attack" style="width: 200px;">1</div>
+        <div class="dib skill_1" style="min-width: 400px; width: calc(100% - 601px);">2</div>
+        <div class="dib fr skill_3" style="width: 200px;" >4</div>
+        <div class="dib fr skill_2" style="width: 200px;" >3</div>
+      </div>
+      
+      <div class="mb-5">
+        <div class="dib attack" style="width: 200px;">1</div>
+        <div class="dib skill_1" style="min-width: 400px; width: calc(100% - 601px);">2</div>
+        <div class="dib fr skill_3" style="width: 200px;" >4</div>
+        <div class="dib fr skill_2" style="width: 200px;" >3</div>
+      </div>
+    </div>
   </div>
-
 </template>
 
 <script lang="ts">
@@ -207,10 +113,6 @@ export default class Home extends Vue {
   }
 
   public mounted() {
-    window.onresize = () => {
-      this.adjustUlHeight();
-    };
-    this.adjustUlHeight();
     // @ts-ignore
     window.$home = this;
   }
@@ -260,6 +162,24 @@ export default class Home extends Vue {
 </script>
 
 <style scoped lang="css">
+  .main { 
+    height: 100vh;
+    margin-right: 300px;
+    overflow: auto;
+  }
+  .holder {
+    min-width: 1002px;
+  }
+  .fr {
+    float: right;
+  }
+  .dib {
+    display: inline-block;
+  }
+  .mb-5 {
+    margin-bottom:  5px;
+  }
+  
   .the-brand {
     display: inline-block;
     font-size: 14px;
@@ -393,19 +313,19 @@ export default class Home extends Vue {
      font-size: 12px;
      line-height: 18px;
   }
-  .factor.attack {
+  .attack {
     background-color: #4cb4e7;
   }
-  .factor.force_strike {
+  .force_strike {
     background-color: #ffc09f;
   }
-  .factor.skill_1 {
+  .skill_1 {
     background-color: #495A80;
   }
-  .factor.skill_2 {
+  .skill_2 {
     background-color: #008573;
   }
-  .factor.skill_3 {
+  .skill_3 {
     background-color: #483C32;
   }
   .factor.team_buff {

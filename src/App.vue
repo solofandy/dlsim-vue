@@ -25,18 +25,18 @@ body {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #eee; 
+  background: transparent; 
 }
  
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: rgba(0,0,0,0.2);
+  background: rgba(0,0,0,.25);
   border-radius: 2px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0,0,0,0.4);
+  background: rgba(0,0,0,.5);
 }
 
 </style>
