@@ -27,26 +27,46 @@
         <li v-for="(ad) in filterd" :key="ad.name">
           <div class="dib name h-60">
             <div class="dfac">
-              <img class="d-f avater" :src='"https://b1ueb1ues.github.io/dl-sim/pic/character/" + ad.name + ".png"'>
-              <img class="d-f wyrmprint" :src='"https://b1ueb1ues.github.io/dl-sim/pic/dragon/" + ad.dragon + ".png"'>
-              <img class="d-f wyrmprint" :src='"https://b1ueb1ues.github.io/dl-sim/pic/amulet/" + ad.wyrmprint0 + ".png"'>
-              <img class="d-f wyrmprint" :src='"https://b1ueb1ues.github.io/dl-sim/pic/amulet/" + ad.wyrmprint1 + ".png"'>
+              <popper trigger="hover" :options="{placement: 'top'}">
+                <div class="popper">
+                  {{ad.name.replace(/_/g, '!')}}
+                </div>
+                 <img slot="reference" class="d-f avater" :src='"https://b1ueb1ues.github.io/dl-sim/pic/character/" + ad.name + ".png"'>
+              </popper>
+              <popper trigger="hover" :options="{placement: 'top'}">
+                <div class="popper">
+                  {{ad.dragon}}
+                </div>
+                 <img slot="reference" class="d-f wyrmprint" :src='"https://b1ueb1ues.github.io/dl-sim/pic/dragon/" + ad.dragon + ".png"'>
+              </popper>
+              <popper trigger="hover" :options="{placement: 'top'}">
+                <div class="popper">
+                  {{ad.wyrmprint0}}
+                </div>
+                 <img slot="reference" class="d-f wyrmprint" :src='"https://b1ueb1ues.github.io/dl-sim/pic/amulet/" + ad.wyrmprint0 + ".png"'>
+              </popper>
+              <popper trigger="hover" :options="{placement: 'top'}">
+                <div class="popper">
+                  {{ad.wyrmprint1}}
+                </div>
+                <img slot="reference" class="d-f wyrmprint" :src='"https://b1ueb1ues.github.io/dl-sim/pic/amulet/" + ad.wyrmprint1 + ".png"'>
+              </popper>
             </div>
           </div>
           <div class="dib dps">
             <div class="dps-holder">
               <div class="factors mb-6">
-                <el-tooltip placement="top" transition="none" v-for="f of ad.dps1.filterd" :key="f.factor" class="factor" :class="'c-' + f.category.toLowerCase()" :style="{width: f.width + '%'}">
-                  <div slot="content"><span class="f-title">{{f.category !== 'Others' ? f.category : f.factor}}: </span>{{f.dps}}</div>
-                  <div></div>
-                </el-tooltip>
+                <popper trigger="hover" :options="{placement: 'top'}" v-for="f of ad.dps1.filterd" :key="f.factor">
+                  <div class="popper"><span class="f-title">{{f.category !== 'Others' ? f.category : f.factor}}: </span>{{f.dps}}</div>
+                  <div slot="reference"  class="factor" :class="'c-' + f.category.toLowerCase()" :style="{width: f.width + '%'}"></div>
+                </popper>
                 <div class="full"><b>{{ad.dps1.all}}</b></div>
               </div>
               <div class="factors">
-                <el-tooltip placement="top" transition="none" v-for="f of ad.dps2.filterd" :key="f.factor" class="factor" :class="'c-' + f.category.toLowerCase()" :style="{width: f.width + '%'}">
-                  <div slot="content"><span class="f-title">{{f.category !== 'Others' ? f.category : f.factor}}: </span>{{f.dps}}</div>
-                  <div class="op-3"></div>
-                </el-tooltip>
+                <popper trigger="hover" :options="{placement: 'top'}" v-for="f of ad.dps1.filterd" :key="f.factor">
+                  <div class="popper"><span class="f-title">{{f.category !== 'Others' ? f.category : f.factor}}: </span>{{f.dps}}</div>
+                  <div slot="reference"  class="factor op-3" :class="'c-' + f.category.toLowerCase()" :style="{width: f.width + '%'}"></div>
+                </popper>
                 <div class="full">{{ad.dps2.all}}</div>
               </div>
             </div>
@@ -86,7 +106,8 @@
           </el-radio-group>
       </div>
       <!-- <div class="splitter"></div> -->
-      <div class="title">Co-abilities</div>
+      <div class="title">Co-abilities  
+      </div>
       <div class="filter">
         <el-checkbox-group class="cb-filter" v-model="exs" size="small" @change="reload()">
           <el-checkbox label="k">
@@ -191,9 +212,13 @@ import { Http } from '@/service/http';
 import { Adventurer } from '../model/adventurer';
 import { Dps } from '../model/dps';
 import { ElPopover } from 'element-ui/types/popover';
+// @ts-ignore
+import Popper from 'vue-popperjs';
 
 @Component({
-  components: {},
+  components: {
+    Popper,
+  },
 })
 export default class DpsComponent extends Vue {
 
@@ -336,10 +361,9 @@ export default class DpsComponent extends Vue {
 </script>
 
 <style>
-  .table-dps .el-loading-mask {
-    background-color: rgba(255,255,255,.5);
-  }
-  /* .d-f {
+
+  
+    /* .d-f {
     display: inline-block!important;
   } */
   
@@ -399,6 +423,17 @@ export default class DpsComponent extends Vue {
     line-height: 0px;
   }
 
+  .holder .popper {
+    color: #eeeeee!important;
+    background: rgba(0,0,0,.8)!important;
+    border-color: rgba(0,0,0,.8)!important;
+    padding: 4px 8px!important;
+    font-size: 12px!important;
+  }
+
+  .holder .popper .popper__arrow {
+    border-color: rgba(0,0,0,.8) transparent transparent transparent!important;
+  }
   
 </style>
 
