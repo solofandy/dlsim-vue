@@ -4,27 +4,27 @@
       <ul class="holder">
         <li class="title">
           <div class="dib name">
-            <div class="dfac h-40" style="padding-left: 33px;">
+            <div class="dfac h-40 color-aaa" style="padding-left: 33px;">
               Adventurer
             </div>
           </div>
           <div class="dib dps">
-            <div class="dfac h-40">
+            <div class="dfac h-40 color-aaa">
               DPS Distribution
             </div>
           </div>
           <div class="dib comment fr">
-            <div class="dfac h-40">
+            <div class="dfac h-40 color-aaa">
               Description
             </div>
           </div>
           <div class="dib condition fr">
-            <div class="dfac h-40">
+            <div class="dfac h-40 color-aaa">
               Condition
             </div>
           </div>
         </li>
-        <li v-for="(ad) in filterd" :key="ad.name">
+        <li v-for="(ad, idx) in filterd" :key="ad.name + idx">
           <div class="dib name h-60">
             <div class="dfac">
               <popper trigger="hover" :options="{placement: 'top'}">
@@ -41,13 +41,13 @@
               </popper>
               <popper trigger="hover" :options="{placement: 'top'}">
                 <div class="popper">
-                  {{ad.wyrmprint0}}
+                  {{ad.wyrmprint0.replace(/_/g, ' ')}}
                 </div>
                  <img slot="reference" class="d-f wyrmprint" :src='"https://b1ueb1ues.github.io/dl-sim/pic/amulet/" + ad.wyrmprint0 + ".png"'>
               </popper>
               <popper trigger="hover" :options="{placement: 'top'}">
                 <div class="popper">
-                  {{ad.wyrmprint1}}
+                  {{ad.wyrmprint1.replace(/_/g, ' ')}}
                 </div>
                 <img slot="reference" class="d-f wyrmprint" :src='"https://b1ueb1ues.github.io/dl-sim/pic/amulet/" + ad.wyrmprint1 + ".png"'>
               </popper>
@@ -63,11 +63,11 @@
                 <div class="full"><b>{{ad.dps1.all}}</b></div>
               </div>
               <div class="factors">
-                <popper trigger="hover" :options="{placement: 'top'}" v-for="f of ad.dps1.filterd" :key="f.factor">
+                <popper trigger="hover" :options="{placement: 'top'}" v-for="f of ad.dps2.filterd" :key="f.factor">
                   <div class="popper"><span class="f-title">{{f.category !== 'Others' ? f.category : f.factor}}: </span>{{f.dps}}</div>
                   <div slot="reference"  class="factor op-3" :class="'c-' + f.category.toLowerCase()" :style="{width: f.width + '%'}"></div>
                 </popper>
-                <div class="full">{{ad.dps2.all}}</div>
+                <div class="full color-aaa">{{ad.dps2.all}}</div>
               </div>
             </div>
           </div>
@@ -106,7 +106,7 @@
           </el-radio-group>
       </div>
       <!-- <div class="splitter"></div> -->
-      <div class="title">Co-abilities  
+      <div class="title">Co-abilities
       </div>
       <div class="filter">
         <el-checkbox-group class="cb-filter" v-model="exs" size="small" @change="reload()">
@@ -127,7 +127,7 @@
       <div class="splitter"></div>
       <div class="title">
         Rarity
-        <span v-if="rarities.length > 0"><a class="this.rarities" @click="toggleRarity()">Reset</a></span>
+        <span v-if="rarities.length > 0"><a class="toggle" @click="toggleRarity()">Reset</a></span>
       </div>
       <div class="filter">
         <el-checkbox-group class="cb-filter" v-model="rarities" size="mini" @change="reload()">
@@ -362,11 +362,6 @@ export default class DpsComponent extends Vue {
 
 <style>
 
-  
-    /* .d-f {
-    display: inline-block!important;
-  } */
-  
   .mt-5 {
     margin-top: 5px!important;
   }
@@ -389,39 +384,6 @@ export default class DpsComponent extends Vue {
     min-height: auto;
     box-sizing: border-box;
   }
-  
-
-  /* .main-scrollbar .el-scrollbar__thumb {
-    background-color: rgba(144,147,153,.6);
-  }
-  .main-scrollbar .el-scrollbar__thumb:hover {
-    background-color: rgba(144,147,153,.8);
-  } */
-
-  /* .main-scrollbar >.el-scrollbar__wrap {
-    overflow-x: auto;
-  } */
-  .table-dps {
-    margin-bottom: 10px;
-  }
-  .table-dps.el-table td {
-    border-bottom: 0px!important;
-    padding: 4px 0px;
-  }
-  .table-dps tr th:first-child,
-  .table-dps tr td:first-child {
-    padding-left: 30px;
-  }
-  .table-dps tr th:last-child,
-  .table-dps tr td:last-child {
-    padding-right: 30px;
-  }
-  .table-dps .el-table .cell {
-    font-size: 12px;
-  }
-  .table-dps.el-table td.row-name .cell {
-    line-height: 0px;
-  }
 
   .holder .popper {
     color: #eeeeee!important;
@@ -429,12 +391,14 @@ export default class DpsComponent extends Vue {
     border-color: rgba(0,0,0,.8)!important;
     padding: 4px 8px!important;
     font-size: 12px!important;
+    box-shadow: none!important;
+    -webkit-box-shadow: none!important;
   }
 
   .holder .popper .popper__arrow {
     border-color: rgba(0,0,0,.8) transparent transparent transparent!important;
   }
-  
+
 </style>
 
 <style scoped lang="css">
@@ -464,25 +428,29 @@ export default class DpsComponent extends Vue {
   .h-40 {
     height: 40px;
   }
-  
+
+  .color-aaa {
+    color: #aaa!important;
+  }
+
   .main-scrollbar {
     /* height: calc(100% - 80px); */
     height: 100vh;
     margin-right: 320px;
     overflow: auto;
   }
-  
+
   .holder {
     min-width: 1032px;
     padding: 0px;
     margin: 0px;
     padding-bottom: 20px;
   }
-  
+
   .holder li {
     list-style: none;
   }
-  
+
   .holder .title {
     border-bottom: 1px solid #eee;
     margin-bottom: 10px;
@@ -493,9 +461,8 @@ export default class DpsComponent extends Vue {
   .holder .title .condition {
     font-size: 14px!important;
     font-weight: 500;
-    color: #888;
   }
-  
+
   .holder .name {
     padding: 0px;
     width: 210px;
@@ -507,30 +474,30 @@ export default class DpsComponent extends Vue {
     padding-right: 5px;
     padding-left: 30px;
   }
-  
+
   .holder .name img.wyrmprint {
     width: 30px;
     height: 30px;
     padding-left: 5px;
   }
-  
+
   .holder .dps {
     padding: 0px 10px;
     min-width: 400px;
     width: calc(100% - 632px);
   }
-  
+
   .holder .dps .dps-holder {
     padding: 15px 60px 15px 0px;
   }
-  
+
   .holder .comment {
     font-size: 14px;
     color: #555;
     width: 170px;
     padding: 0px 30px 0px 10px;
   }
-  
+
   .holder .condition {
     color: #555;
     font-size: 14px;
@@ -627,7 +594,7 @@ export default class DpsComponent extends Vue {
   span.f-title {
     color: #cccccc;
   }
-  
+
   .aside {
     width: 290px;
     padding-left: 30px;
@@ -747,13 +714,13 @@ export default class DpsComponent extends Vue {
     padding-left: 30px;
     padding-bottom: 5px;
   }
-  
+
   .aside .footer .links a {
     font-size: 11px;
     color: #555;
     text-decoration: none;
   }
-  
+
   .aside .footer .links a:hover,
   .aside .footer .powerby a:hover {
     text-decoration: underline;

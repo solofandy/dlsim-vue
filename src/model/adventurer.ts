@@ -50,8 +50,9 @@ export class Adventurer {
                 raw.push(a);
             }
         }
+        raw.forEach((a, index) => a.findDps2(raw, index));
         const result = raw.filter((a) => /^_c_/.test(a.name) === false);
-        result.forEach((a) => a.findDps2(raw));
+        // result.forEach((a, index) => a.findDps2(raw, index));
         result.sort((p, q) => p.dps1.full > q.dps1.full ? -1 : p.dps1.full === q.dps1.full ? 0 : 1);
         return result;
     }
@@ -78,13 +79,13 @@ export class Adventurer {
     public dps1: Dps = new Dps();
     public dps2: Dps = new Dps();
 
-    public findDps2(rawAdventurers: Adventurer[]) {
-        const adt = rawAdventurers.find((a) => a.name === `_c_${this.name}`);
-        if (adt) {
-            this.dps2.full = adt.dps1.full;
-            this.dps2.factors = adt.dps1.factors;
-            this.dps2.filterd = adt.dps1.filterd;
+    public findDps2(rawAdventurers: Adventurer[], index: number) {
+        if (index + 1 >= rawAdventurers.length || rawAdventurers[index + 1].name !== `_c_${this.name}`) {
+            return ;
         }
+        this.dps2.full = rawAdventurers[index + 1].dps1.full;
+        this.dps2.factors = rawAdventurers[index + 1].dps1.factors;
+        this.dps2.filterd = rawAdventurers[index + 1].dps1.filterd;
     }
 
     public filterDpsFactors(categories: string[] = []) {
