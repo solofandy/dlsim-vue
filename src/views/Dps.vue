@@ -12,18 +12,18 @@
       <ul class="mobile-holder" v-if="mobileView">
         <li v-for="(ad, idx) in filterd" :key="ad.name + idx" class="mb-2">
           <div class="dib">
-            <img class="avater" :src="'https://b1ueb1ues.github.io/dl-sim/pic/character/' + ad.name + '.png'"/>
+            <img class="avater" :src="'/dl-sim/pic/character/' + ad.name + '.png'"/>
           </div>
           <div class="dib content">
             <div class="mt-2">
               <div class="dib drogon">
-                <img class="wyrmprint" :src="'https://b1ueb1ues.github.io/dl-sim/pic/dragon/' + ad.dragon + '.png'"/>
+                <img class="wyrmprint" :src="'/dl-sim/pic/dragon/' + ad.dragon + '.png'"/>
               </div>
               <div class="dib drogon">
-                <img class="wyrmprint" :src="'https://b1ueb1ues.github.io/dl-sim/pic/amulet/' + ad.wyrmprint0 + '.png'"/>
+                <img class="wyrmprint" :src="'/dl-sim/pic/amulet/' + ad.wyrmprint0 + '.png'"/>
               </div>
               <div class="dib drogon">
-                <img class="wyrmprint" :src="'https://b1ueb1ues.github.io/dl-sim/pic/amulet/' + ad.wyrmprint1 + '.png'"/>
+                <img class="wyrmprint" :src="'/dl-sim/pic/amulet/' + ad.wyrmprint1 + '.png'"/>
               </div>
               <div class="dib dps ml-6">
                 <div  class="factors dps1 mb-1">
@@ -34,7 +34,7 @@
                 </div>
                 <div class="factors dps2 mb-2 op-3">
                   <div v-for="f of ad.dps2.filterd" :key="f.factor" class="dps2 factor" :class="'c-' + f.category.toLowerCase()" :style="{width: f.width + '%'}"></div>
-                </div>  
+                </div>
               </div>
             </div>
             <div class="mobile-comment ml-6">
@@ -73,25 +73,25 @@
                 <div class="popper">
                   {{ad.name.replace(/_/g, '!')}}
                 </div>
-                 <img slot="reference" class="d-f avater" :src='"https://b1ueb1ues.github.io/dl-sim/pic/character/" + ad.name + ".png"'>
+                 <img slot="reference" class="d-f avater" :src='"/dl-sim/pic/character/" + ad.name + ".png"'>
               </popper>
               <popper trigger="hover" :options="{placement: 'top'}">
                 <div class="popper">
                   {{ad.dragon}}
                 </div>
-                 <img slot="reference" class="d-f wyrmprint" :src='"https://b1ueb1ues.github.io/dl-sim/pic/dragon/" + ad.dragon + ".png"'>
+                 <img slot="reference" class="d-f wyrmprint" :src='"/dl-sim/pic/dragon/" + ad.dragon + ".png"'>
               </popper>
               <popper trigger="hover" :options="{placement: 'top'}">
                 <div class="popper">
                   {{ad.wyrmprint0.replace(/_/g, ' ')}}
                 </div>
-                 <img slot="reference" class="d-f wyrmprint" :src='"https://b1ueb1ues.github.io/dl-sim/pic/amulet/" + ad.wyrmprint0 + ".png"'>
+                 <img slot="reference" class="d-f wyrmprint" :src='"/dl-sim/pic/amulet/" + ad.wyrmprint0 + ".png"'>
               </popper>
               <popper trigger="hover" :options="{placement: 'top'}">
                 <div class="popper">
                   {{ad.wyrmprint1.replace(/_/g, ' ')}}
                 </div>
-                <img slot="reference" class="d-f wyrmprint" :src='"https://b1ueb1ues.github.io/dl-sim/pic/amulet/" + ad.wyrmprint1 + ".png"'>
+                <img slot="reference" class="d-f wyrmprint" :src='"/dl-sim/pic/amulet/" + ad.wyrmprint1 + ".png"'>
               </popper>
             </div>
           </div>
@@ -127,128 +127,130 @@
       </ul>
     </div>
     <div class="aside the-filter" :class="{show: mobileView && !asideHidden}">
-      <div class="the-brand">
-        <img class="brand" src="/brand.png" />
-      </div>
-      <div class="title">
-        Legend
-        <div class="closer fr" @click="asideHidden = true" v-if="mobileView">&times;</div>
-      </div>
-      <div class="legend" style="line-height: 25px;">
-        <div class="dib" v-for="(c) in allDpsCategories" :key="c" @click="toggleFactor(c)" :class="{'c-gray': !dpsCategories.includes(c)}" >
-          <span class="dib">
-            <div class="indic" :class="'c-' + c.toLowerCase()"></div>
-          </span>
-          <span class="dib">
-            <div class="label">{{ c }}</div>
-          </span>
+      <div class="aside-container">
+        <div class="the-brand">
+          <img class="brand" src="/dl-sim/logo-new.png" />
         </div>
-      </div>
-      <div class="splitter"></div>
-      <div class="title">Mode</div>
-      <div class="filter">
-        <el-radio-group class="rg-filter" v-model="category" size="mini" @change="reload()">
-          <el-radio-button label="180">180s</el-radio-button>
-          <el-radio-button label="120">120s</el-radio-button>
-          <el-radio-button label="60">60s</el-radio-button>
-          <el-radio-button label="sp" value="sp">Special</el-radio-button>
-        </el-radio-group>
-      </div>
-      <!-- <div class="splitter"></div> -->
-      <div class="title">Co-abilities</div>
-      <div class="filter">
-        <el-checkbox-group class="cb-filter" v-model="exs" size="small" @change="reload()">
-          <el-checkbox label="k">
-            <img class="icon-weapon" src="https://b1ueb1ues.github.io/dl-sim/pic/weapon/blade.png" alt="K"/>
-          </el-checkbox>
-          <el-checkbox label="r">
-            <img class="icon-weapon" src="https://b1ueb1ues.github.io/dl-sim/pic/weapon/wand.png" alt="K"/>
-          </el-checkbox>
-          <el-checkbox label="d">
-            <img class="icon-weapon" src="https://b1ueb1ues.github.io/dl-sim/pic/weapon/dagger.png" alt="K"/>
-          </el-checkbox>
-          <el-checkbox label="b">
-            <img class="icon-weapon" src="https://b1ueb1ues.github.io/dl-sim/pic/weapon/bow.png" alt="K"/>
-          </el-checkbox>
-        </el-checkbox-group>
-      </div>
-      <div class="splitter"></div>
-      <div class="title">
-        Rarity
-        <span v-if="rarities.length > 0"><a class="toggle" @click="toggleRarity()">Reset</a></span>
-      </div>
-      <div class="filter">
-        <el-checkbox-group class="cb-filter" v-model="rarities" size="mini" @change="reload()">
-          <el-checkbox label="5">
-            <img class="icon-rarity" src="https://b1ueb1ues.github.io/dl-sim/pic/rarity/5.png" alt="K"/>
-          </el-checkbox>
-          <el-checkbox label="4">
-            <img class="icon-rarity" src="https://b1ueb1ues.github.io/dl-sim/pic/rarity/4.png" alt="K"/>
-          </el-checkbox>
-          <el-checkbox label="3">
-            <img class="icon-rarity" src="https://b1ueb1ues.github.io/dl-sim/pic/rarity/3.png" alt="K"/>
-          </el-checkbox>
-        </el-checkbox-group>
-      </div>
-      <div class="title">
-        Element
-        <span v-if="elements.length > 0"><a class="toggle" @click="toggleElement()">Reset</a></span>
-      </div>
-      <div class="filter">
-        <el-checkbox-group class="cb-filter" v-model="elements" size="mini" @change="reload()">
-          <el-checkbox label="flame">
-            <img class="icon-element" src="https://b1ueb1ues.github.io/dl-sim/pic/element/flame.png" alt="K"/>
-          </el-checkbox>
-          <el-checkbox label="water">
-            <img class="icon-element" src="https://b1ueb1ues.github.io/dl-sim/pic/element/water.png" alt="K"/>
-          </el-checkbox>
-          <el-checkbox label="wind">
-            <img class="icon-element" src="https://b1ueb1ues.github.io/dl-sim/pic/element/wind.png" alt="K"/>
-          </el-checkbox>
-          <el-checkbox label="light">
-            <img class="icon-element" src="https://b1ueb1ues.github.io/dl-sim/pic/element/light.png" alt="K"/>
-          </el-checkbox>
-          <el-checkbox label="shadow">
-            <img class="icon-element" src="https://b1ueb1ues.github.io/dl-sim/pic/element/shadow.png" alt="K"/>
-          </el-checkbox>
-        </el-checkbox-group>
-      </div>
-      <div class="title">
-        Class
-        <span v-if="weapons.length > 0"><a class="toggle" @click="toggleWeapon()">Reset</a></span>
-      </div>
-      <div class="filter">
-        <el-checkbox-group class="cb-filter" v-model="weapons" size="mini" @change="reload()">
-          <el-checkbox label="sword">
-            <img class="icon-weapon" src="https://b1ueb1ues.github.io/dl-sim/pic/weapon/sword.png" />
-          </el-checkbox>
-          <el-checkbox label="blade">
-            <img class="icon-weapon" src="https://b1ueb1ues.github.io/dl-sim/pic/weapon/blade.png" />
-          </el-checkbox>
-          <el-checkbox label="dagger">
-            <img class="icon-weapon" src="https://b1ueb1ues.github.io/dl-sim/pic/weapon/dagger.png" />
-          </el-checkbox>
-          <el-checkbox label="lance">
-            <img class="icon-weapon" src="https://b1ueb1ues.github.io/dl-sim/pic/weapon/lance.png" />
-          </el-checkbox>
-          <el-checkbox label="axe">
-            <img class="icon-weapon" src="https://b1ueb1ues.github.io/dl-sim/pic/weapon/axe.png" />
-          </el-checkbox>
-          <el-checkbox label="bow">
-            <img class="icon-weapon" src="https://b1ueb1ues.github.io/dl-sim/pic/weapon/bow.png" />
-          </el-checkbox>
-          <el-checkbox label="wand">
-            <img class="icon-weapon" src="https://b1ueb1ues.github.io/dl-sim/pic/weapon/wand.png" />
-          </el-checkbox>
-        </el-checkbox-group>
-      </div>
-      <div class="footer">
-        <div class="links">
-          <a href="https://github.com/b1ueb1ues/b1ueb1ues.github.io/blob/master/dl-sim/README.md">About</a>
-          <a class="pl-15" href="https://github.com/b1ueb1ues/b1ueb1ues.github.io/issues/new">Feedback</a>
-          <a class="pl-15" href="https://github.com/b1ueb1ues/b1ueb1ues.github.io/blob/master/dl-sim/amulet.csv">Wrymprints</a>
+        <div class="title">
+          Legend
+          <div class="closer fr" @click="asideHidden = true" v-if="mobileView">&times;</div>
         </div>
-        <div class="powerby mb-5">powered by <a href="https://cn.vuejs.org/">Vue</a> and <a href="https://element.eleme.cn/">Element</a></div>
+        <div class="legend" style="line-height: 25px;">
+          <div class="dib" v-for="(c) in allDpsCategories" :key="c" @click="toggleFactor(c)" :class="{'c-gray': !dpsCategories.includes(c)}" >
+            <span class="dib">
+              <div class="indic" :class="'c-' + c.toLowerCase()"></div>
+            </span>
+            <span class="dib">
+              <div class="label">{{ c }}</div>
+            </span>
+          </div>
+        </div>
+        <div class="splitter"></div>
+        <div class="title">Mode</div>
+        <div class="filter">
+          <el-radio-group class="rg-filter" v-model="category" size="mini" @change="reload()">
+            <el-radio-button label="180">180s</el-radio-button>
+            <el-radio-button label="120">120s</el-radio-button>
+            <el-radio-button label="60">60s</el-radio-button>
+            <el-radio-button label="sp" value="sp">Special</el-radio-button>
+          </el-radio-group>
+        </div>
+        <!-- <div class="splitter"></div> -->
+        <div class="title">Co-abilities</div>
+        <div class="filter">
+          <el-checkbox-group class="cb-filter" v-model="exs" size="small" @change="reload()">
+            <el-checkbox label="k">
+              <img class="icon-weapon" src="/dl-sim/pic/weapon/blade.png" alt="K"/>
+            </el-checkbox>
+            <el-checkbox label="r">
+              <img class="icon-weapon" src="/dl-sim/pic/weapon/wand.png" alt="K"/>
+            </el-checkbox>
+            <el-checkbox label="d">
+              <img class="icon-weapon" src="/dl-sim/pic/weapon/dagger.png" alt="K"/>
+            </el-checkbox>
+            <el-checkbox label="b">
+              <img class="icon-weapon" src="/dl-sim/pic/weapon/bow.png" alt="K"/>
+            </el-checkbox>
+          </el-checkbox-group>
+        </div>
+        <div class="splitter"></div>
+        <div class="title">
+          Rarity
+          <span v-if="rarities.length > 0"><a class="toggle" @click="toggleRarity()">Reset</a></span>
+        </div>
+        <div class="filter">
+          <el-checkbox-group class="cb-filter" v-model="rarities" size="mini" @change="reload()">
+            <el-checkbox label="5">
+              <img class="icon-rarity" src="/dl-sim/pic/rarity/5.png" alt="K"/>
+            </el-checkbox>
+            <el-checkbox label="4">
+              <img class="icon-rarity" src="/dl-sim/pic/rarity/4.png" alt="K"/>
+            </el-checkbox>
+            <el-checkbox label="3">
+              <img class="icon-rarity" src="/dl-sim/pic/rarity/3.png" alt="K"/>
+            </el-checkbox>
+          </el-checkbox-group>
+        </div>
+        <div class="title">
+          Element
+          <span v-if="elements.length > 0"><a class="toggle" @click="toggleElement()">Reset</a></span>
+        </div>
+        <div class="filter">
+          <el-checkbox-group class="cb-filter" v-model="elements" size="mini" @change="reload()">
+            <el-checkbox label="flame">
+              <img class="icon-element" src="/dl-sim/pic/element/flame.png" alt="K"/>
+            </el-checkbox>
+            <el-checkbox label="water">
+              <img class="icon-element" src="/dl-sim/pic/element/water.png" alt="K"/>
+            </el-checkbox>
+            <el-checkbox label="wind">
+              <img class="icon-element" src="/dl-sim/pic/element/wind.png" alt="K"/>
+            </el-checkbox>
+            <el-checkbox label="light">
+              <img class="icon-element" src="/dl-sim/pic/element/light.png" alt="K"/>
+            </el-checkbox>
+            <el-checkbox label="shadow">
+              <img class="icon-element" src="/dl-sim/pic/element/shadow.png" alt="K"/>
+            </el-checkbox>
+          </el-checkbox-group>
+        </div>
+        <div class="title">
+          Class
+          <span v-if="weapons.length > 0"><a class="toggle" @click="toggleWeapon()">Reset</a></span>
+        </div>
+        <div class="filter">
+          <el-checkbox-group class="cb-filter" v-model="weapons" size="mini" @change="reload()">
+            <el-checkbox label="sword">
+              <img class="icon-weapon" src="/dl-sim/pic/weapon/sword.png" />
+            </el-checkbox>
+            <el-checkbox label="blade">
+              <img class="icon-weapon" src="/dl-sim/pic/weapon/blade.png" />
+            </el-checkbox>
+            <el-checkbox label="dagger">
+              <img class="icon-weapon" src="/dl-sim/pic/weapon/dagger.png" />
+            </el-checkbox>
+            <el-checkbox label="lance">
+              <img class="icon-weapon" src="/dl-sim/pic/weapon/lance.png" />
+            </el-checkbox>
+            <el-checkbox label="axe">
+              <img class="icon-weapon" src="/dl-sim/pic/weapon/axe.png" />
+            </el-checkbox>
+            <el-checkbox label="bow">
+              <img class="icon-weapon" src="/dl-sim/pic/weapon/bow.png" />
+            </el-checkbox>
+            <el-checkbox label="wand">
+              <img class="icon-weapon" src="/dl-sim/pic/weapon/wand.png" />
+            </el-checkbox>
+          </el-checkbox-group>
+        </div>
+        <div class="footer">
+          <div class="links">
+            <a href="https://github.com/b1ueb1ues/b1ueb1ues.github.io/blob/master/dl-sim/README.md">About</a>
+            <a class="pl-15" href="https://github.com/b1ueb1ues/b1ueb1ues.github.io/issues/new">Feedback</a>
+            <a class="pl-15" href="https://github.com/b1ueb1ues/b1ueb1ues.github.io/blob/master/dl-sim/amulet.csv">Wrymprints</a>
+          </div>
+          <div class="powerby mb-5">powered by <a href="https://cn.vuejs.org/">Vue</a> and <a href="https://element.eleme.cn/">Element</a></div>
+        </div>
       </div>
     </div>
   </div>
@@ -271,7 +273,7 @@ import Popper from 'vue-popperjs';
 export default class DpsComponent extends Vue {
 
   public get csvUrl(): string {
-    return `/${this.category.toLowerCase()}/data_${this.exs.length === 0 ? '_' : this.exs.join('')}.csv`;
+    return `/dl-sim/${this.category.toLowerCase()}/data_${this.exs.length === 0 ? '_' : this.exs.join('')}.csv`;
   }
   public category: 'sp' | '60' | '120' | '180' = '180';
   public exs: string[] = ['k', 'r'];
@@ -282,15 +284,7 @@ export default class DpsComponent extends Vue {
   public allDpsCategories: string[] = ['Atk', 'S1', 'S2', 'S3', 'Fs', 'Buff', 'Bleed', 'Others'];
   public dpsCategories: string[] = ['Atk', 'S1', 'S2', 'S3', 'Fs', 'Buff', 'Bleed', 'Others'];
 
-  // public rarity: string = 'all';
-  // public element: string = 'all';
-  // public weapon: string = 'all';
-
   private mobileView: boolean = false;
-
-  // public thatAdventurer: Adventurer = new Adventurer();
-  // public thatDps: Dps = new Dps();
-
   private asideHidden: boolean = true;
 
   private cachedCsvUrl: string = '';
@@ -329,9 +323,9 @@ export default class DpsComponent extends Vue {
   public mounted() {
     // @ts-ignore
     window.$dps = this;
-    this.mobileView = window.innerWidth <= 400;
+    this.mobileView = window.innerWidth <= 800;
     window.onresize = () => {
-      this.mobileView = window.innerWidth <= 400;
+      this.mobileView = window.innerWidth <= 800;
     };
     this.reload();
   }
@@ -510,9 +504,8 @@ export default class DpsComponent extends Vue {
 }
 
 .main-scrollbar {
-  /* height: calc(100% - 80px); */
   height: 100vh;
-  margin-right: 320px;
+  margin-right: 321px;
   overflow: auto;
 }
 
@@ -521,8 +514,8 @@ export default class DpsComponent extends Vue {
 }
 
 .head .logo {
-  margin-left: 10px;
-  margin-top: 10px;
+  padding-top: 10px;
+  padding-left: 10px;
 }
 
 .head .brand {
@@ -695,6 +688,7 @@ span.f-title {
   width: 290px;
   padding-left: 30px;
   position: fixed;
+  overflow-y: auto;
   top: 0;
   right: 0;
   bottom: 0;
@@ -706,21 +700,6 @@ span.f-title {
   -o-transition: all 0.5s ease;
   -ms-transition: all 0.5s ease;
   transition: all 0.5s ease;
-}
-
-.aside .the-brand {
-  display: flex;
-  align-items: center;
-  width: 200px;
-  margin: 20px 0;
-}
-.aside .the-brand .brand {
-  width: 175px;
-  height: 45px;
-}
-.aside .the-brand span {
-  font-size: 12px;
-  font-weight: 700;
 }
 
 .cb-filter {
@@ -786,6 +765,20 @@ span.f-title {
   line-height: 16px;
 }
 
+.aside .aside-container {
+  min-height: 800px;
+  position: relative;
+}
+
+.aside .the-brand {
+  width: 200px;
+  padding: 20px 0;
+}
+.aside .the-brand .brand {
+  width: 175px;
+  height: 45px;
+}
+
 .aside .footer {
   position: absolute;
   bottom: 0px;
@@ -798,11 +791,7 @@ span.f-title {
 .aside .footer .powerby {
   font-size: 10px;
   color: #aaa;
-  padding-left: 30px;
   padding-bottom: 10px;
-  /* width: 200px;
-    margin: auto;
-    text-align: center; */
 }
 .aside .footer .powerby a {
   color: #999;
@@ -810,10 +799,6 @@ span.f-title {
 }
 
 .aside .footer .links {
-  /* width: 200px;
-    margin: auto;
-    text-align: center; */
-  padding-left: 30px;
   padding-bottom: 5px;
 }
 
@@ -829,9 +814,13 @@ span.f-title {
   color: #333;
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 800px) {
   .head {
     display: block;
+    margin-bottom: 8px;
+    -webkit-box-shadow: 0px 2px 5px 0px rgba(221,221,221,1);
+    -moz-box-shadow: 0px 2px 5px 0px rgba(221,221,221,1);
+    box-shadow: 0px 2px 5px 0px rgba(221,221,221,1);
   }
   .aside {
     z-index: 999;
@@ -841,7 +830,7 @@ span.f-title {
   .aside.show {
     right: 0px;
   }
-  
+
   .main-scrollbar {
     margin-right: 0px;
   }
@@ -864,20 +853,20 @@ span.f-title {
     margin: 0px;
     padding-bottom: 20px;
   }
-  
+
   .mobile-holder .content {
     width: calc(100% - 75px);
     vertical-align: top;
   }
-  
+
   .mobile-holder .content .drogon {
     height: 30px;
   }
-  
+
   .mobile-holder .dps {
     width: calc(100% - 143px);
   }
-  
+
   .mobile-holder .dps .dps1 {
     height: 16px;
   }
@@ -886,7 +875,7 @@ span.f-title {
     line-height: 16px;
     text-align: left;
   }
-  
+
   .mobile-holder .dps .dps2 {
     height: 8px;
   }
@@ -902,7 +891,7 @@ span.f-title {
     height: 30px;
     padding-left: 2px;
   }
-  
+
   .mobile-holder .mobile-comment {
     font-size: 12px;
     line-height: 16px;
