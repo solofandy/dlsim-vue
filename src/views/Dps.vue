@@ -1,16 +1,16 @@
 <template>
   <div class="main">
-    <div class="main-scrollbar" v-loading="loading" element-loading-spinner="el-icon-loading" element-loading-text="loading...">
-      <div class="head" v-if="mobileView">
-        <div class="logo">
-          <img class="brand" src="/brand.png" />
-        </div>
+    <div class="head" v-if="mobileView">
+      <div class="logo">
+        <img class="brand" src="/dl-sim/logo-new.png" />
         <div class="fr menu">
           <i class="el-icon-s-operation" @click="asideHidden = false"></i>
         </div>
       </div>
+    </div>
+    <div class="main-scrollbar" v-loading="loading" element-loading-spinner="el-icon-loading" element-loading-text="loading...">
       <ul class="mobile-holder" v-if="mobileView">
-        <li v-for="(ad, idx) in filterd" :key="ad.name + idx" class="mb-2">
+        <li v-for="(ad, idx) in filterd" :key="ad.name + idx" class="mb-10">
           <div class="dib">
             <img class="avater" :src="'/dl-sim/pic/character/' + ad.name + '.png'"/>
           </div>
@@ -206,6 +206,7 @@
             <el-checkbox label="wind">
               <img class="icon-element" src="/dl-sim/pic/element/wind.png" alt="K"/>
             </el-checkbox>
+            <br/>
             <el-checkbox label="light">
               <img class="icon-element" src="/dl-sim/pic/element/light.png" alt="K"/>
             </el-checkbox>
@@ -483,6 +484,9 @@ export default class DpsComponent extends Vue {
 .mb-6 {
   margin-bottom: 6px;
 }
+.mb-10 {
+  margin-bottom: 10px;
+}
 .h-60 {
   height: 60px;
 }
@@ -507,26 +511,6 @@ export default class DpsComponent extends Vue {
   height: 100vh;
   margin-right: 321px;
   overflow: auto;
-}
-
-.head {
-  display: none;
-}
-
-.head .logo {
-  padding-top: 10px;
-  padding-left: 10px;
-}
-
-.head .brand {
-  width: 175px;
-  height: 45px;
-}
-
-.head .menu {
-  margin-right: 20px;
-  margin-top: -40px;
-  color: #888;
 }
 
 .holder {
@@ -766,13 +750,14 @@ span.f-title {
 }
 
 .aside .aside-container {
+  height: 100%;
   min-height: 800px;
   position: relative;
 }
 
 .aside .the-brand {
   width: 200px;
-  padding: 20px 0;
+  padding: 20px 0 0 0;
 }
 .aside .the-brand .brand {
   width: 175px;
@@ -817,11 +802,28 @@ span.f-title {
 @media screen and (max-width: 800px) {
   .head {
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 20px;
     -webkit-box-shadow: 0px 2px 5px 0px rgba(221,221,221,1);
     -moz-box-shadow: 0px 2px 5px 0px rgba(221,221,221,1);
     box-shadow: 0px 2px 5px 0px rgba(221,221,221,1);
   }
+  .head .logo {
+    height: 30px;
+    padding: 15px 15px;
+  }
+
+  .head .brand {
+    width: 117px;
+    height: 30px;
+  }
+
+  .head .menu {
+    color: #888;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    padding: 5px 6px 4px 6px;
+  }
+
   .aside {
     z-index: 999;
     background: #fafafa;
@@ -835,14 +837,18 @@ span.f-title {
     margin-right: 0px;
   }
 
+  .aside .aside-container {
+    min-height: 680px;
+  }
+
   .aside .the-brand {
     display: none;
   }
 
   .aside .closer {
     font-size: 24px;
-    margin-right: 30px;
-    margin-top: -16px;
+    margin-right: 15px;
+    margin-top: -10px;
     color: #999;
     cursor: pointer;
   }
@@ -864,15 +870,15 @@ span.f-title {
   }
 
   .mobile-holder .dps {
-    width: calc(100% - 143px);
+    width: calc(100% - 150px);
   }
 
   .mobile-holder .dps .dps1 {
     height: 16px;
   }
   .mobile-holder .dps .dps1 .full {
-    margin-right: -33px;
-    line-height: 16px;
+    margin-right: -42px;
+    line-height: 18px;
     text-align: left;
   }
 
