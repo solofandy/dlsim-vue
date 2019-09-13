@@ -274,7 +274,8 @@ import Popper from 'vue-popperjs';
 export default class DpsComponent extends Vue {
 
   public get csvUrl(): string {
-    return `/dl-sim/${this.category.toLowerCase()}/data_${this.exs.length === 0 ? '_' : this.exs.join('')}.csv`;
+    const condition = 'krdb'.split('').filter((c) => this.exs.includes(c)).join('');
+    return `/dl-sim/${this.category.toLowerCase()}/data_${condition ? condition : '_'}.csv`;
   }
   public category: 'sp' | '60' | '120' | '180' = '180';
   public exs: string[] = ['k', 'r'];
