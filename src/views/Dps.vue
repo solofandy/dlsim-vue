@@ -803,7 +803,6 @@ span.f-title {
 @media screen and (max-width: 800px) {
   .head {
     display: block;
-    margin-bottom: 20px;
     -webkit-box-shadow: 0px 2px 5px 0px rgba(221,221,221,1);
     -moz-box-shadow: 0px 2px 5px 0px rgba(221,221,221,1);
     box-shadow: 0px 2px 5px 0px rgba(221,221,221,1);
@@ -836,6 +835,7 @@ span.f-title {
 
   .main-scrollbar {
     margin-right: 0px;
+    height: calc(100vh - 60px);
   }
 
   .aside .aside-container {
@@ -856,9 +856,8 @@ span.f-title {
 
   .mobile-holder {
     list-style: none;
-    padding: 0px;
+    padding: 15px 0px 5px 0px;
     margin: 0px;
-    padding-bottom: 20px;
   }
 
   .mobile-holder .content {
@@ -902,6 +901,7 @@ span.f-title {
   .mobile-holder .mobile-comment {
     font-size: 12px;
     line-height: 16px;
+    color: #aaaaaa;
   }
 }
 </style>
