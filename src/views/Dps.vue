@@ -109,7 +109,7 @@
                   <div class="popper"><span class="f-title">{{f.category !== 'Others' ? f.category : f.factor}}: </span>{{f.dps}}</div>
                   <div slot="reference"  class="factor op-3" :class="'c-' + f.category.toLowerCase()" :style="{width: f.width + '%'}"></div>
                 </popper>
-                <div class="full color-aaa">{{ad.dps2.all}}</div>
+                <div class="full color-aaa">{{ad.dps2.all || ''}}</div>
               </div>
             </div>
           </div>
