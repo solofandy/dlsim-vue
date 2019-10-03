@@ -324,28 +324,26 @@ export default class DpsComponent extends Vue {
       this.cachedCsvUrl = this.adventurers.length > 0 ? this.csvUrl : '';
     }
 
-    if (this.adventurers.length > 0) {
-      if (this.category !== 'sp') {
-        const scaledTeamDPSRatio: number = this.teamDPS / this.defaultTeamDPS;
-        this.adventurers.forEach((a) => {
-          a.dps1.factors
-            .filter((f) => f.category === NAME_MAP.team_buff)
-            .forEach((f) => f.scaleOriginalDPS(scaledTeamDPSRatio));
-          a.dps2.factors
-            .filter((f) => f.category === NAME_MAP.team_buff)
-            .forEach((f) => f.scaleOriginalDPS(scaledTeamDPSRatio));
-        });
-      }
-
-      this.adventurers = Adventurer.sort(this.adventurers);
-      const maxx = this.adventurers[0].dps1.all;
-
+    if (this.category !== 'sp') {
+      const scaledTeamDPSRatio: number = this.teamDPS / this.defaultTeamDPS;
       this.adventurers.forEach((a) => {
-        a.condition = a.condition.replace(/[<>]/g, '');
-        a.dps1.factors.forEach((f) => (f.width = (100 * f.scaledDps) / maxx));
-        a.dps2.factors.forEach((f) => (f.width = (100 * f.scaledDps) / maxx));
+        a.dps1.factors
+          .filter((f) => f.category === NAME_MAP.team_buff)
+          .forEach((f) => f.scaleOriginalDPS(scaledTeamDPSRatio));
+        a.dps2.factors
+          .filter((f) => f.category === NAME_MAP.team_buff)
+          .forEach((f) => f.scaleOriginalDPS(scaledTeamDPSRatio));
       });
     }
+
+    this.adventurers = Adventurer.sort(this.adventurers);
+    const maxx = this.adventurers.length > 0 ? this.adventurers[0].dps1.all : 0;
+
+    this.adventurers.forEach((a) => {
+      a.condition = a.condition.replace(/[<>]/g, '');
+      a.dps1.factors.forEach((f) => (f.width = (100 * f.scaledDps) / maxx));
+      a.dps2.factors.forEach((f) => (f.width = (100 * f.scaledDps) / maxx));
+    });
 
     this.filterd = this.adventurers.filter((a) => this.matched(a));
     await this.$nextTick();
