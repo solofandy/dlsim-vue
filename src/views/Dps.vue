@@ -8,149 +8,106 @@
         </div>
       </div>
     </div>
-    <div
-      class="main-scrollbar"
-      v-loading="loading"
-      element-loading-spinner="el-icon-loading"
-      element-loading-text="loading..."
-    >
+    <div class="main-scrollbar" v-loading="loading" element-loading-spinner="el-icon-loading" element-loading-text="loading...">
       <ul class="mobile-holder" v-if="mobileView">
         <li v-for="(ad, idx) in filterd" :key="ad.name + idx" class="mb-10">
           <div class="dib">
-            <img class="avater" :src="'/dl-sim/pic/character/' + ad.name + '.png'" />
+            <img class="avater" :src="'/dl-sim/pic/character/' + ad.name + '.png'"/>
           </div>
           <div class="dib content">
             <div class="mt-2">
               <div class="dib drogon">
-                <img class="wyrmprint" :src="'/dl-sim/pic/dragon/' + ad.dragon + '.png'" />
+                <img class="wyrmprint" :src="'/dl-sim/pic/dragon/' + ad.dragon + '.png'"/>
               </div>
               <div class="dib drogon">
-                <img class="wyrmprint" :src="'/dl-sim/pic/amulet/' + ad.wyrmprint0 + '.png'" />
+                <img class="wyrmprint" :src="'/dl-sim/pic/amulet/' + ad.wyrmprint0 + '.png'"/>
               </div>
               <div class="dib drogon">
-                <img class="wyrmprint" :src="'/dl-sim/pic/amulet/' + ad.wyrmprint1 + '.png'" />
+                <img class="wyrmprint" :src="'/dl-sim/pic/amulet/' + ad.wyrmprint1 + '.png'"/>
               </div>
               <div class="dib dps ml-6">
-                <div class="factors dps1 mb-1">
-                  <div
-                    v-for="f of ad.dps1.filterd"
-                    :key="f.factor"
-                    class="dps1 factor"
-                    :class="'c-' + f.category.toLowerCase()"
-                    :style="{width: f.width + '%'}"
-                  ></div>
+                <div  class="factors dps1 mb-1">
+                  <div v-for="f of ad.dps1.filterd" :key="f.factor" class="dps1 factor" :class="'c-' + f.category.toLowerCase()" :style="{width: f.width + '%'}"></div>
                   <div class="full">
                     <b>{{ad.dps1.all}}</b>
                   </div>
                 </div>
                 <div class="factors dps2 mb-2 op-3">
-                  <div
-                    v-for="f of ad.dps2.filterd"
-                    :key="f.factor"
-                    class="dps2 factor"
-                    :class="'c-' + f.category.toLowerCase()"
-                    :style="{width: f.width + '%'}"
-                  ></div>
+                  <div v-for="f of ad.dps2.filterd" :key="f.factor" class="dps2 factor" :class="'c-' + f.category.toLowerCase()" :style="{width: f.width + '%'}"></div>
                 </div>
               </div>
             </div>
-            <div class="mobile-comment ml-6">{{ ad.condition }}. {{ad.comment}}</div>
+            <div class="mobile-comment ml-6">
+              {{ ad.condition }}. {{ad.comment}}
+            </div>
           </div>
         </li>
       </ul>
       <ul class="holder" v-if="!mobileView">
         <li class="title">
           <div class="dib name">
-            <div class="dfac h-40 color-aaa" style="padding-left: 33px;">Adventurer</div>
+            <div class="dfac h-40 color-aaa" style="padding-left: 33px;">
+              Adventurer
+            </div>
           </div>
           <div class="dib dps">
-            <div class="dfac h-40 color-aaa">DPS Distribution</div>
+            <div class="dfac h-40 color-aaa">
+              DPS Distribution
+            </div>
           </div>
           <div class="dib comment fr">
-            <div class="dfac h-40 color-aaa">Description</div>
+            <div class="dfac h-40 color-aaa">
+              Description
+            </div>
           </div>
           <div class="dib condition fr">
-            <div class="dfac h-40 color-aaa">Condition</div>
+            <div class="dfac h-40 color-aaa">
+              Condition
+            </div>
           </div>
         </li>
         <li v-for="(ad, idx) in filterd" :key="ad.name + idx">
           <div class="dib name h-60">
             <div class="dfac">
               <popper trigger="hover" :options="{placement: 'top'}">
-                <div class="popper">{{ad.name.replace(/_/g, '!')}}</div>
-                <img
-                  slot="reference"
-                  class="d-f avater"
-                  :src=""/dl-sim/pic/character/" + ad.name + ".png""
-                />
+                <div class="popper">
+                  {{ad.name.replace(/_/g, '!')}}
+                </div>
+                 <img slot="reference" class="d-f avater" :src='"/dl-sim/pic/character/" + ad.name + ".png"'>
               </popper>
               <popper trigger="hover" :options="{placement: 'top'}">
-                <div class="popper">{{ad.dragon}}</div>
-                <img
-                  slot="reference"
-                  class="d-f wyrmprint"
-                  :src=""/dl-sim/pic/dragon/" + ad.dragon + ".png""
-                />
+                <div class="popper">
+                  {{ad.dragon}}
+                </div>
+                 <img slot="reference" class="d-f wyrmprint" :src='"/dl-sim/pic/dragon/" + ad.dragon + ".png"'>
               </popper>
               <popper trigger="hover" :options="{placement: 'top'}">
-                <div class="popper">{{ad.wyrmprint0.replace(/_/g, ' ')}}</div>
-                <img
-                  slot="reference"
-                  class="d-f wyrmprint"
-                  :src=""/dl-sim/pic/amulet/" + ad.wyrmprint0 + ".png""
-                />
+                <div class="popper">
+                  {{ad.wyrmprint0.replace(/_/g, ' ')}}
+                </div>
+                 <img slot="reference" class="d-f wyrmprint" :src='"/dl-sim/pic/amulet/" + ad.wyrmprint0 + ".png"'>
               </popper>
               <popper trigger="hover" :options="{placement: 'top'}">
-                <div class="popper">{{ad.wyrmprint1.replace(/_/g, ' ')}}</div>
-                <img
-                  slot="reference"
-                  class="d-f wyrmprint"
-                  :src=""/dl-sim/pic/amulet/" + ad.wyrmprint1 + ".png""
-                />
+                <div class="popper">
+                  {{ad.wyrmprint1.replace(/_/g, ' ')}}
+                </div>
+                <img slot="reference" class="d-f wyrmprint" :src='"/dl-sim/pic/amulet/" + ad.wyrmprint1 + ".png"'>
               </popper>
             </div>
           </div>
           <div class="dib dps">
             <div class="dps-holder">
               <div class="factors mb-6">
-                <popper
-                  trigger="hover"
-                  :options="{placement: 'top'}"
-                  v-for="f of ad.dps1.filterd"
-                  :key="f.factor"
-                >
-                  <div class="popper">
-                    <span class="f-title">{{f.category !== 'Others' ? f.category : f.factor}}:</span>
-                    {{f.scaledDps}}
-                  </div>
-                  <div
-                    slot="reference"
-                    class="factor"
-                    :class="'c-' + f.category.toLowerCase()"
-                    :style="{width: f.width + '%'}"
-                  ></div>
+                <popper trigger="hover" :options="{placement: 'top'}" v-for="f of ad.dps1.filterd" :key="f.factor">
+                  <div class="popper"><span class="f-title">{{f.category !== 'Others' ? f.category : f.factor}}: </span>{{f.scaledDps}}</div>
+                  <div slot="reference"  class="factor" :class="'c-' + f.category.toLowerCase()" :style="{width: f.width + '%'}"></div>
                 </popper>
-                <div class="full">
-                  <b>{{ad.dps1.all}}</b>
-                </div>
+                <div class="full"><b>{{ad.dps1.all}}</b></div>
               </div>
               <div class="factors">
-                <popper
-                  trigger="hover"
-                  :options="{placement: 'top'}"
-                  v-for="f of ad.dps2.filterd"
-                  :key="f.factor"
-                >
-                  <div class="popper">
-                    <span class="f-title">{{f.category !== 'Others' ? f.category : f.factor}}:</span>
-                    {{f.scaledDps}}
-                  </div>
-                  <div
-                    slot="reference"
-                    class="factor op-3"
-                    :class="'c-' + f.category.toLowerCase()"
-                    :style="{width: f.width + '%'}"
-                  ></div>
+                <popper trigger="hover" :options="{placement: 'top'}" v-for="f of ad.dps2.filterd" :key="f.factor">
+                  <div class="popper"><span class="f-title">{{f.category !== 'Others' ? f.category : f.factor}}: </span>{{f.scaledDps}}</div>
+                  <div slot="reference"  class="factor op-3" :class="'c-' + f.category.toLowerCase()" :style="{width: f.width + '%'}"></div>
                 </popper>
                 <div class="full color-aaa">{{ad.dps2.all || ''}}</div>
               </div>
@@ -179,13 +136,7 @@
           <div class="closer fr" @click="asideHidden = true" v-if="mobileView">&times;</div>
         </div>
         <div class="legend" style="line-height: 25px;">
-          <div
-            class="dib"
-            v-for="(c) in allDpsCategories"
-            :key="c"
-            @click="toggleFactor(c)"
-            :class="{'c-gray': !dpsCategories.includes(c)}"
-          >
+          <div class="dib" v-for="(c) in allDpsCategories" :key="c" @click="toggleFactor(c)" :class="{'c-gray': !dpsCategories.includes(c)}" >
             <span class="dib">
               <div class="indic" :class="'c-' + c.toLowerCase()"></div>
             </span>
@@ -209,16 +160,16 @@
         <div class="filter">
           <el-checkbox-group class="cb-filter" v-model="exs" size="small" @change="reload()">
             <el-checkbox label="k">
-              <img class="icon-weapon" src="/dl-sim/pic/weapon/blade.png" alt="K" />
+              <img class="icon-weapon" src="/dl-sim/pic/weapon/blade.png" alt="K"/>
             </el-checkbox>
             <el-checkbox label="r">
-              <img class="icon-weapon" src="/dl-sim/pic/weapon/wand.png" alt="K" />
+              <img class="icon-weapon" src="/dl-sim/pic/weapon/wand.png" alt="K"/>
             </el-checkbox>
             <el-checkbox label="d">
-              <img class="icon-weapon" src="/dl-sim/pic/weapon/dagger.png" alt="K" />
+              <img class="icon-weapon" src="/dl-sim/pic/weapon/dagger.png" alt="K"/>
             </el-checkbox>
             <el-checkbox label="b">
-              <img class="icon-weapon" src="/dl-sim/pic/weapon/bow.png" alt="K" />
+              <img class="icon-weapon" src="/dl-sim/pic/weapon/bow.png" alt="K"/>
             </el-checkbox>
           </el-checkbox-group>
         </div>
@@ -236,54 +187,48 @@
         <div class="splitter"></div>
         <div class="title">
           Rarity
-          <span v-if="rarities.length > 0">
-            <a class="toggle" @click="toggleRarity()">Reset</a>
-          </span>
+          <span v-if="rarities.length > 0"><a class="toggle" @click="toggleRarity()">Reset</a></span>
         </div>
         <div class="filter">
           <el-checkbox-group class="cb-filter" v-model="rarities" size="mini" @change="reload()">
             <el-checkbox label="5">
-              <img class="icon-rarity" src="/dl-sim/pic/rarity/5.png" alt="K" />
+              <img class="icon-rarity" src="/dl-sim/pic/rarity/5.png" alt="K"/>
             </el-checkbox>
             <el-checkbox label="4">
-              <img class="icon-rarity" src="/dl-sim/pic/rarity/4.png" alt="K" />
+              <img class="icon-rarity" src="/dl-sim/pic/rarity/4.png" alt="K"/>
             </el-checkbox>
             <el-checkbox label="3">
-              <img class="icon-rarity" src="/dl-sim/pic/rarity/3.png" alt="K" />
+              <img class="icon-rarity" src="/dl-sim/pic/rarity/3.png" alt="K"/>
             </el-checkbox>
           </el-checkbox-group>
         </div>
         <div class="title">
           Element
-          <span v-if="elements.length > 0">
-            <a class="toggle" @click="toggleElement()">Reset</a>
-          </span>
+          <span v-if="elements.length > 0"><a class="toggle" @click="toggleElement()">Reset</a></span>
         </div>
         <div class="filter">
           <el-checkbox-group class="cb-filter" v-model="elements" size="mini" @change="reload()">
             <el-checkbox label="flame">
-              <img class="icon-element" src="/dl-sim/pic/element/flame.png" alt="K" />
+              <img class="icon-element" src="/dl-sim/pic/element/flame.png" alt="K"/>
             </el-checkbox>
             <el-checkbox label="water">
-              <img class="icon-element" src="/dl-sim/pic/element/water.png" alt="K" />
+              <img class="icon-element" src="/dl-sim/pic/element/water.png" alt="K"/>
             </el-checkbox>
             <el-checkbox label="wind">
-              <img class="icon-element" src="/dl-sim/pic/element/wind.png" alt="K" />
+              <img class="icon-element" src="/dl-sim/pic/element/wind.png" alt="K"/>
             </el-checkbox>
-            <br />
+            <br/>
             <el-checkbox label="light">
-              <img class="icon-element" src="/dl-sim/pic/element/light.png" alt="K" />
+              <img class="icon-element" src="/dl-sim/pic/element/light.png" alt="K"/>
             </el-checkbox>
             <el-checkbox label="shadow">
-              <img class="icon-element" src="/dl-sim/pic/element/shadow.png" alt="K" />
+              <img class="icon-element" src="/dl-sim/pic/element/shadow.png" alt="K"/>
             </el-checkbox>
           </el-checkbox-group>
         </div>
         <div class="title">
           Class
-          <span v-if="weapons.length > 0">
-            <a class="toggle" @click="toggleWeapon()">Reset</a>
-          </span>
+          <span v-if="weapons.length > 0"><a class="toggle" @click="toggleWeapon()">Reset</a></span>
         </div>
         <div class="filter">
           <el-checkbox-group class="cb-filter" v-model="weapons" size="mini" @change="reload()">
@@ -312,23 +257,11 @@
         </div>
         <div class="footer">
           <div class="links">
-            <a
-              href="https://github.com/b1ueb1ues/b1ueb1ues.github.io/blob/master/dl-sim/README.md"
-            >About</a>
-            <a
-              class="pl-15"
-              href="https://github.com/b1ueb1ues/b1ueb1ues.github.io/issues/new"
-            >Feedback</a>
-            <a
-              class="pl-15"
-              href="https://github.com/b1ueb1ues/b1ueb1ues.github.io/blob/master/dl-sim/amulet.csv"
-            >Wrymprints</a>
+            <a href="https://github.com/b1ueb1ues/b1ueb1ues.github.io/blob/master/dl-sim/README.md">About</a>
+            <a class="pl-15" href="https://github.com/b1ueb1ues/b1ueb1ues.github.io/issues/new">Feedback</a>
+            <a class="pl-15" href="https://github.com/b1ueb1ues/b1ueb1ues.github.io/blob/master/dl-sim/amulet.csv">Wrymprints</a>
           </div>
-          <div class="powerby mb-5">
-            powered by
-            <a href="https://cn.vuejs.org/">Vue</a> and
-            <a href="https://element.eleme.cn/">Element</a>
-          </div>
+          <div class="powerby mb-5">powered by <a href="https://cn.vuejs.org/">Vue</a> and <a href="https://element.eleme.cn/">Element</a></div>
         </div>
       </div>
     </div>
@@ -340,8 +273,8 @@ import { Component, Vue } from 'vue-property-decorator';
 import { Http } from '@/service/http';
 import { Adventurer } from '../model/adventurer';
 import { Dps } from '../model/dps';
-import { NAME_MAP } from '../model/dps-factor';
 import { ElPopover } from 'element-ui/types/popover';
+import { NAME_MAP } from '../model/dps-factor';
 // @ts-ignore
 import Popper from 'vue-popperjs';
 
@@ -351,43 +284,21 @@ import Popper from 'vue-popperjs';
   },
 })
 export default class DpsComponent extends Vue {
+
   public get csvUrl(): string {
-    const condition = 'krdb'
-      .split('')
-      .filter((c) => this.exs.includes(c))
-      .join('');
-    return `/dl-sim/${this.category.toLowerCase()}/data_${
-      condition ? condition : '_'
-    }.csv`;
+    const condition = 'krdb'.split('').filter((c) => this.exs.includes(c)).join('');
+    return `/dl-sim/${this.category.toLowerCase()}/data_${condition ? condition : '_'}.csv`;
   }
   public category: 'sp' | '60' | '120' | '180' = '180';
   public exs: string[] = ['k', 'r'];
+  public defaultTeamDPS: number = 6000;
   public teamDPS: number = this.defaultTeamDPS;
   public rarities: string[] = []; // ['5', '4', '3'];
   public elements: string[] = []; // ['flame', 'water', 'wind', 'light', 'shadow'];
   public weapons: string[] = []; // ['sword', 'blade', 'dagger', 'axe', 'lance', 'bow', 'wand'];
 
-  public allDpsCategories: string[] = [
-    'Atk',
-    'S1',
-    'S2',
-    'S3',
-    'Fs',
-    'Buff',
-    'Bleed',
-    'Others',
-  ];
-  public dpsCategories: string[] = [
-    'Atk',
-    'S1',
-    'S2',
-    'S3',
-    'Fs',
-    'Buff',
-    'Bleed',
-    'Others',
-  ];
-  private defaultTeamDPS: number = 6000;
+  public allDpsCategories: string[] = ['Atk', 'S1', 'S2', 'S3', 'Fs', 'Buff', 'Bleed', 'Others'];
+  public dpsCategories: string[] = ['Atk', 'S1', 'S2', 'S3', 'Fs', 'Buff', 'Bleed', 'Others'];
 
   private mobileView: boolean = false;
   private asideHidden: boolean = true;
@@ -472,15 +383,7 @@ export default class DpsComponent extends Vue {
 
   private toggleWeapon() {
     if (this.weapons.length === 0) {
-      this.weapons = [
-        'sword',
-        'blade',
-        'dagger',
-        'axe',
-        'lance',
-        'bow',
-        'wand',
-      ];
+      this.weapons =  ['sword', 'blade', 'dagger', 'axe', 'lance', 'bow', 'wand'];
     } else {
       this.weapons = [];
     }
@@ -525,16 +428,10 @@ export default class DpsComponent extends Vue {
   }
 
   private matched(adventurer: Adventurer): boolean {
-    if (
-      this.rarities.length > 0 &&
-      !this.rarities.includes(adventurer.rarity)
-    ) {
+    if (this.rarities.length > 0 && !this.rarities.includes(adventurer.rarity)) {
       return false;
     }
-    if (
-      this.elements.length > 0 &&
-      !this.elements.includes(adventurer.element)
-    ) {
+    if (this.elements.length > 0 && !this.elements.includes(adventurer.element)) {
       return false;
     }
     if (this.weapons.length > 0 && !this.weapons.includes(adventurer.weapon)) {
@@ -632,10 +529,10 @@ export default class DpsComponent extends Vue {
   height: 40px;
 }
 .h-10 {
-  height: 10px !important;
+  height: 10px!important;
 }
 .h-5 {
-  height: 5px !important;
+  height: 5px!important;
 }
 
 .color-aaa {
@@ -937,9 +834,9 @@ span.f-title {
 @media screen and (max-width: 800px) {
   .head {
     display: block;
-    -webkit-box-shadow: 0px 2px 5px 0px rgba(221, 221, 221, 1);
-    -moz-box-shadow: 0px 2px 5px 0px rgba(221, 221, 221, 1);
-    box-shadow: 0px 2px 5px 0px rgba(221, 221, 221, 1);
+    -webkit-box-shadow: 0px 2px 5px 0px rgba(221,221,221,1);
+    -moz-box-shadow: 0px 2px 5px 0px rgba(221,221,221,1);
+    box-shadow: 0px 2px 5px 0px rgba(221,221,221,1);
   }
   .head .logo {
     height: 30px;
