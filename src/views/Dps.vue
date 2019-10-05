@@ -98,18 +98,30 @@
           <div class="dib dps">
             <div class="dps-holder">
               <div class="factors mb-6">
-                <popper trigger="hover" :options="{placement: 'top'}" v-for="f of ad.dps1.filterd" :key="f.factor">
-                  <div class="popper"><span class="f-title">{{f.category !== 'Others' ? f.category : f.factor}}: </span>{{f.dps}}</div>
-                  <div slot="reference"  class="factor" :class="'c-' + f.category.toLowerCase()" :style="{width: f.width + '%'}"></div>
+                <popper trigger="hover" :options="{placement: 'top'}">
+                  <div class="popper dps-details">
+                    <span v-for="(f, fi) in ad.dps1.filterd" :key="f.factor"  >
+                      <span class="f-title">{{(fi > 0 ? ', ' : '') + (f.category !== 'Others' ? f.category : f.factor)}}: </span>{{f.dps}}
+                    </span>
+                  </div>
+                  <div slot="reference" class="dps-progress">
+                    <div v-for="f of ad.dps1.filterd" :key="f.factor" class="factor" :class="'c-' + f.category.toLowerCase()" :style="{width: f.width + '%'}"></div>
+                    <div class="full"><b>{{ad.dps1.all}}</b></div>
+                  </div>
                 </popper>
-                <div class="full"><b>{{ad.dps1.all}}</b></div>
               </div>
               <div class="factors">
-                <popper trigger="hover" :options="{placement: 'top'}" v-for="f of ad.dps2.filterd" :key="f.factor">
-                  <div class="popper"><span class="f-title">{{f.category !== 'Others' ? f.category : f.factor}}: </span>{{f.dps}}</div>
-                  <div slot="reference"  class="factor op-3" :class="'c-' + f.category.toLowerCase()" :style="{width: f.width + '%'}"></div>
+                <popper trigger="hover" :options="{placement: 'top'}">
+                  <div class="popper dps-details">
+                    <span v-for="(f, fi) in ad.dps2.filterd" :key="f.factor"  >
+                      <span class="f-title">{{(fi > 0 ? ', ' : '') + (f.category !== 'Others' ? f.category : f.factor)}}: </span>{{f.dps}}
+                    </span>
+                  </div>
+                  <div slot="reference" class="dps-progress">
+                    <div v-for="f of ad.dps2.filterd" :key="f.factor" class="factor op-3" :class="'c-' + f.category.toLowerCase()" :style="{width: f.width + '%'}"></div>
+                    <div class="full color-aaa"><b>{{ad.dps2.all || ''}}</b></div>
+                  </div>
                 </popper>
-                <div class="full color-aaa">{{ad.dps2.all || ''}}</div>
               </div>
             </div>
           </div>
@@ -131,6 +143,18 @@
         <div class="the-brand">
           <img class="brand" src="/dl-sim/logo-new.png" />
         </div>
+        <section v-if="lastCommits.length > 0">
+          <div class="title">
+            Lastest updates
+          </div>
+          <ul class="commits">
+            <li v-for="(c) in lastCommits" :key="c.sha">
+              <span class="message">{{c.message}}</span>
+              <span class="date">{{c.at}}</span>
+            </li>
+          </ul>
+          <div class="splitter"></div>
+        </section>
         <div class="title">
           Legend
           <div class="closer fr" @click="asideHidden = true" v-if="mobileView">&times;</div>
@@ -265,6 +289,7 @@ import { Dps } from '../model/dps';
 import { ElPopover } from 'element-ui/types/popover';
 // @ts-ignore
 import Popper from 'vue-popperjs';
+import { GithubCommit } from '@/model/github-commit';
 
 @Component({
   components: {
@@ -272,6 +297,8 @@ import Popper from 'vue-popperjs';
   },
 })
 export default class DpsComponent extends Vue {
+
+  public lastCommits: GithubCommit[] = [];
 
   public get csvUrl(): string {
     const condition = 'krdb'.split('').filter((c) => this.exs.includes(c)).join('');
@@ -323,13 +350,22 @@ export default class DpsComponent extends Vue {
   }
 
   public mounted() {
-    // @ts-ignore
-    window.$dps = this;
+    (window as any).$dps = this;
+    (window as any).$http = Http;
     this.mobileView = window.innerWidth <= 800;
     window.onresize = () => {
       this.mobileView = window.innerWidth <= 800;
     };
     this.reload();
+
+    (window as any).changelog = (cmits: any) => {
+      this.lastCommits = (cmits.data as any[]).slice(0, 3).map((c) => {
+        return GithubCommit.fromApiCommit(c);
+      });
+    };
+    const $changelog = document.createElement('script');
+    $changelog.setAttribute('src', 'https://api.github.com/repos/b1ueb1ues/b1ueb1ues.github.io/commits?page=1&callback=changelog');
+    document.head.appendChild($changelog);
   }
 
   private toggleRarity() {
@@ -588,6 +624,21 @@ div.comment {
   margin-bottom: 2px;
 }
 
+.dps-progress {
+  height: 100%;
+}
+
+.dps-progress:hover {
+  -webkit-box-shadow: 1px 1px 2px 1px rgba(64,158,255,0.6);
+  -moz-box-shadow: 1px 1px 2px 1px rgba(64,158,255,0.6);
+  box-shadow: 1px 1px 2px 1px rgba(64,158,255,0.6);
+}
+
+.dps-details {
+  padding: 6px 12px!important;
+  font-size: 14px!important;
+}
+
 .factors {
   height: 12px;
   position: relative;
@@ -765,6 +816,25 @@ span.f-title {
   height: 45px;
 }
 
+  .aside .commits {
+    padding-inline-start: 20px;
+    font-size: 12px;
+  }
+  
+  .aside .commits li {
+    line-height: 22px;
+  }
+  
+  /* .aside .commits .message {
+    
+  } */
+  
+  .aside .commits .date {
+    float: right;
+    color: #666666;
+    padding-right: 40px;
+  }
+
 .aside .footer {
   position: absolute;
   bottom: 0px;
@@ -845,7 +915,7 @@ span.f-title {
   .aside .the-brand {
     display: none;
   }
-
+  
   .aside .closer {
     font-size: 24px;
     margin-right: 15px;
