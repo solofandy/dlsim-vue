@@ -90,7 +90,7 @@ export function humanized_time_span(
 
   function renderDate(dateFormat?: any) {
     const breakdown = getTimeBreakdown();
-    const timeAgoText = dateFormat.text.replace(/\$(\w+)/g, () => {
+    const timeAgoText = dateFormat.text.replace(/\$(\w+)/g, function r2() {
       return breakdown[arguments[1]];
     });
     return depluralizeTimeAgoText(timeAgoText, breakdown);
@@ -100,7 +100,7 @@ export function humanized_time_span(
     for (const i in breakdown) {
       if (breakdown[i] === 1) {
         const regexp = new RegExp('\\b' + i + '\\b');
-        timeAgoText = timeAgoText.replace(regexp, () => {
+        timeAgoText = timeAgoText.replace(regexp, function r() {
           return arguments[0].replace(/s\b/g, '');
         });
       }
