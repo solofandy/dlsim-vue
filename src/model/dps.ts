@@ -9,6 +9,6 @@ export class Dps {
     public filterd: DpsFactor[] = [];
 
     public get all() {
-        return this.filterd.reduce((sum, f) => sum += f.dps, 0);
+        return this.filterd.reduce((sum, f) => sum += f.scaledDps, 0);
     }
 }

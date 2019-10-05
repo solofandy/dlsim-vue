@@ -53,15 +53,12 @@ export class Adventurer {
         raw.forEach((a, index) => a.findDps2(raw, index));
         const result = raw.filter((a) => /^_c_/.test(a.name) === false);
         // result.forEach((a, index) => a.findDps2(raw, index));
-        result.sort((p, q) => p.dps1.full > q.dps1.full ? -1 : p.dps1.full === q.dps1.full ? 0 : 1);
         return result;
     }
 
-    public static sort(adventurers: Adventurer[]) {
-        adventurers.sort((p, q) => {
-            const pp = p.dps1.all;
-            const qq = q.dps1.all;
-            return pp > qq ? -1 : pp === qq ? 0 : 1;
+    public static sort(adventurers: Adventurer[]): Adventurer[] {
+        return adventurers.sort((p, q) => {
+            return q.dps1.all - p.dps1.all;
         });
     }
 
