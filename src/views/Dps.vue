@@ -97,7 +97,7 @@
           </div>
           <div class="dib dps">
             <div class="dps-holder">
-              <div class="factors mb-6">
+             <div class="factors mb-6">
                 <popper trigger="hover" :options="{placement: 'top'}">
                   <div class="popper dps-details">
                     <span v-for="(f, fi) in ad.dps1.filterd" :key="f.factor"  >
@@ -146,6 +146,7 @@
         <section v-if="lastCommits.length > 0">
           <div class="title">
             Lastest updates
+            <span><a class="toggle" href="https://github.com/b1ueb1ues/b1ueb1ues.github.io/commits/master" target="blank">see more ...</a></span>
           </div>
           <ul class="commits">
             <li v-for="(c) in lastCommits" :key="c.sha">
@@ -196,6 +197,18 @@
               <img class="icon-weapon" src="/dl-sim/pic/weapon/bow.png" alt="K"/>
             </el-checkbox>
           </el-checkbox-group>
+        </div>
+        <div class="title">Team DPS</div>
+        <div class="filter">
+          <el-input-number
+            :disabled="category == 'sp'"
+            v-model="teamDPS"
+            controls-position="right"
+            :min="0"
+            :step="500"
+            size="mini"
+            @change="reload()"
+          ></el-input-number>
         </div>
         <div class="splitter"></div>
         <div class="title">
@@ -268,7 +281,10 @@
             </el-checkbox>
           </el-checkbox-group>
         </div>
-        <div class="footer">
+        <div class="title">
+          &nbsp;
+        </div>
+        <div class="filter footer">
           <div class="links">
             <a href="https://github.com/b1ueb1ues/b1ueb1ues.github.io/blob/master/dl-sim/README.md">About</a>
             <a class="pl-15" href="https://github.com/b1ueb1ues/b1ueb1ues.github.io/issues/new">Feedback</a>
@@ -287,6 +303,7 @@ import { Http } from '@/service/http';
 import { Adventurer } from '../model/adventurer';
 import { Dps } from '../model/dps';
 import { ElPopover } from 'element-ui/types/popover';
+import { NAME_MAP } from '../model/dps-factor';
 // @ts-ignore
 import Popper from 'vue-popperjs';
 import { GithubCommit } from '@/model/github-commit';
@@ -306,6 +323,8 @@ export default class DpsComponent extends Vue {
   }
   public category: 'sp' | '60' | '120' | '180' = '180';
   public exs: string[] = ['k', 'r'];
+  public defaultTeamDPS: number = 6000;
+  public teamDPS: number = this.defaultTeamDPS;
   public rarities: string[] = []; // ['5', '4', '3'];
   public elements: string[] = []; // ['flame', 'water', 'wind', 'light', 'shadow'];
   public weapons: string[] = []; // ['sword', 'blade', 'dagger', 'axe', 'lance', 'bow', 'wand'];
@@ -332,17 +351,32 @@ export default class DpsComponent extends Vue {
         this.loading = false;
         return;
       }
+
       this.adventurers = Adventurer.ParseCSV(csv);
       this.cachedCsvUrl = this.adventurers.length > 0 ? this.csvUrl : '';
-      if (this.adventurers.length > 0) {
-        const maxx = this.adventurers[0].dps1.full;
-        this.adventurers.forEach((a) => {
-          a.condition = a.condition.replace(/[<>]/g, '');
-          a.dps1.factors.forEach((f) => f.width = 100 * f.dps / maxx);
-          a.dps2.factors.forEach((f) => f.width = 100 * f.dps / maxx);
-        });
-      }
     }
+
+    if (this.category !== 'sp') {
+      const scaledTeamDPSRatio: number = this.teamDPS / this.defaultTeamDPS;
+      this.adventurers.forEach((a) => {
+        a.dps1.factors
+          .filter((f) => f.category === NAME_MAP.team_buff)
+          .forEach((f) => f.scaleOriginalDPS(scaledTeamDPSRatio));
+        a.dps2.factors
+          .filter((f) => f.category === NAME_MAP.team_buff)
+          .forEach((f) => f.scaleOriginalDPS(scaledTeamDPSRatio));
+      });
+    }
+
+    this.adventurers = Adventurer.sort(this.adventurers);
+    const maxx = this.adventurers.length > 0 ? this.adventurers[0].dps1.all : 0;
+
+    this.adventurers.forEach((a) => {
+      a.condition = a.condition.replace(/[<>]/g, '');
+      a.dps1.factors.forEach((f) => (f.width = (100 * f.scaledDps) / maxx));
+      a.dps2.factors.forEach((f) => (f.width = (100 * f.scaledDps) / maxx));
+    });
+
     this.filterd = this.adventurers.filter((a) => this.matched(a));
     await this.$nextTick();
     await this.sleeep(200);
@@ -836,12 +870,12 @@ span.f-title {
   }
 
 .aside .footer {
-  position: absolute;
+  /* position: absolute;
   bottom: 0px;
   right: 0px;
   width: 100%;
   margin: 0px;
-  padding: 0px;
+  padding: 0px; */
 }
 
 .aside .footer .powerby {
