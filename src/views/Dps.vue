@@ -143,10 +143,11 @@
         <div class="the-brand">
           <img class="brand" src="/dl-sim/logo-new.png" />
         </div>
+        <div class="closer fr" @click="asideHidden = true" v-if="mobileView">&times;</div>
         <section v-if="lastCommits.length > 0">
           <div class="title">
             Lastest updates
-            <span><a class="toggle" href="https://github.com/b1ueb1ues/b1ueb1ues.github.io/commits/master" target="blank">see more ...</a></span>
+            <span><a class="toggle" href="https://github.com/b1ueb1ues/b1ueb1ues.github.io/commits/master" target="blank">See more</a></span>
           </div>
           <ul class="commits">
             <li v-for="(c) in lastCommits" :key="c.sha">
@@ -158,7 +159,6 @@
         </section>
         <div class="title">
           Legend
-          <div class="closer fr" @click="asideHidden = true" v-if="mobileView">&times;</div>
         </div>
         <div class="legend" style="line-height: 25px;">
           <div class="dib" v-for="(c) in allDpsCategories" :key="c" @click="toggleFactor(c)" :class="{'c-gray': !dpsCategories.includes(c)}" >
