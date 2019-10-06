@@ -200,7 +200,7 @@
         </div>
         <div class="title">
           Team DPS 
-          <el-tooltip class="item" effect="dark" content="Team DPS is the total personal damage of your other teammembers, do not count buff damage in this number" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="Team DPS is the total personal damage of your OTHER teammembers" placement="top-start">
             <i class="el-icon-question"></i>
           </el-tooltip>
         </div>
