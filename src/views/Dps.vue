@@ -101,7 +101,7 @@
                 <popper trigger="hover" :options="{placement: 'top'}">
                   <div class="popper dps-details">
                     <span v-for="(f, fi) in ad.dps1.filterd" :key="f.factor"  >
-                      <span class="f-title">{{(fi > 0 ? ', ' : '') + (f.category !== 'Others' ? f.category : f.factor)}}: </span>{{f.dps}}
+                      <span class="f-title">{{(fi > 0 ? ', ' : '') + (f.category !== 'Others' ? f.category : f.factor)}}: </span>{{f.scaledDps}}
                     </span>
                   </div>
                   <div slot="reference" class="dps-progress">
@@ -114,7 +114,7 @@
                 <popper trigger="hover" :options="{placement: 'top'}">
                   <div class="popper dps-details">
                     <span v-for="(f, fi) in ad.dps2.filterd" :key="f.factor"  >
-                      <span class="f-title">{{(fi > 0 ? ', ' : '') + (f.category !== 'Others' ? f.category : f.factor)}}: </span>{{f.dps}}
+                      <span class="f-title">{{(fi > 0 ? ', ' : '') + (f.category !== 'Others' ? f.category : f.factor)}}: </span>{{f.scaledDps}}
                     </span>
                   </div>
                   <div slot="reference" class="dps-progress">
@@ -198,7 +198,12 @@
             </el-checkbox>
           </el-checkbox-group>
         </div>
-        <div class="title">Team DPS</div>
+        <div class="title">
+          Team DPS 
+          <el-tooltip class="item" effect="dark" content="Team DPS is the total personal damage of your other teammembers, do not count buff damage in this number" placement="top-start">
+            <i class="el-icon-question"></i>
+          </el-tooltip>
+        </div>
         <div class="filter">
           <el-input-number
             :disabled="category == 'sp'"
