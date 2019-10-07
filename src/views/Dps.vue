@@ -208,7 +208,6 @@
           <el-input-number
             :disabled="category == 'sp'"
             v-model="teamDPS"
-            controls-position="right"
             :min="0"
             :step="500"
             size="mini"
