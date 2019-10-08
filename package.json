@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build && (copyfiles -u 1 -V -a dist/css/* dist/fonts/* dist/js/* dist/index.html b1ueb1ues.github.io/dl-sim-vue)",
+    "build": "vue-cli-service build && (copyfiles -u 1 -V -a dist/css/* dist/fonts/* dist/js/* dist/index.html ../b1ueb1ues/b1ueb1ues.github.io/dl-sim-vue)",
     "lint": "vue-cli-service lint",
     "start": "node server.js"
   },

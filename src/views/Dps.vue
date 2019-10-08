@@ -46,22 +46,22 @@
       <ul class="holder" v-if="!mobileView">
         <li class="title">
           <div class="dib name">
-            <div class="dfac h-40 color-aaa" style="padding-left: 33px;">
+            <div class="dfac h-40" style="padding-left: 33px;">
               Adventurer
             </div>
           </div>
           <div class="dib dps">
-            <div class="dfac h-40 color-aaa">
+            <div class="dfac h-40">
               DPS Distribution
             </div>
           </div>
           <div class="dib comment fr">
-            <div class="dfac h-40 color-aaa">
+            <div class="dfac h-40">
               Description
             </div>
           </div>
           <div class="dib condition fr">
-            <div class="dfac h-40 color-aaa">
+            <div class="dfac h-40">
               Condition
             </div>
           </div>
@@ -119,7 +119,7 @@
                   </div>
                   <div slot="reference" class="dps-progress">
                     <div v-for="f of ad.dps2.filterd" :key="f.factor" class="factor op-3" :class="'c-' + f.category.toLowerCase()" :style="{width: f.width + '%'}"></div>
-                    <div class="full color-aaa"><b>{{ad.dps2.all || ''}}</b></div>
+                    <div class="full non-condition-dps"><b>{{ad.dps2.all || ''}}</b></div>
                   </div>
                 </popper>
               </div>
@@ -144,19 +144,6 @@
           <img class="brand" src="/dl-sim/logo-new.png" />
         </div>
         <div class="closer fr" @click="asideHidden = true" v-if="mobileView">&times;</div>
-        <section v-if="lastCommits.length > 0">
-          <div class="title">
-            Lastest updates
-            <span><a class="toggle" href="https://github.com/b1ueb1ues/b1ueb1ues.github.io/commits/master" target="blank">See more</a></span>
-          </div>
-          <ul class="commits">
-            <li v-for="(c) in lastCommits" :key="c.sha">
-              <span class="message">{{c.message}}</span>
-              <span class="date">{{c.at}}</span>
-            </li>
-          </ul>
-          <div class="splitter"></div>
-        </section>
         <div class="title">
           Legend
         </div>
@@ -180,7 +167,22 @@
             <el-radio-button label="sp" value="sp">Special</el-radio-button>
           </el-radio-group>
         </div>
-        <!-- <div class="splitter"></div> -->
+        <div class="title">
+          Team DPS
+          <el-tooltip class="item" effect="dark" content="Team DPS is the total personal damage of your OTHER team members" placement="top-start">
+            <i class="el-icon-question"></i>
+          </el-tooltip>
+        </div>
+        <div class="filter">
+          <el-input-number
+            :disabled="category == 'sp'"
+            v-model="teamDPS"
+            :min="0"
+            :step="500"
+            size="mini"
+            @change="reload()"
+          ></el-input-number>
+        </div>
         <div class="title">Co-abilities</div>
         <div class="filter">
           <el-checkbox-group class="cb-filter" v-model="exs" size="small" @change="reload()">
@@ -197,22 +199,6 @@
               <img class="icon-weapon" src="/dl-sim/pic/weapon/bow.png" alt="K"/>
             </el-checkbox>
           </el-checkbox-group>
-        </div>
-        <div class="title">
-          Team DPS 
-          <el-tooltip class="item" effect="dark" content="Team DPS is the total personal damage of your OTHER teammembers" placement="top-start">
-            <i class="el-icon-question"></i>
-          </el-tooltip>
-        </div>
-        <div class="filter">
-          <el-input-number
-            :disabled="category == 'sp'"
-            v-model="teamDPS"
-            :min="0"
-            :step="500"
-            size="mini"
-            @change="reload()"
-          ></el-input-number>
         </div>
         <div class="splitter"></div>
         <div class="title">
@@ -285,16 +271,27 @@
             </el-checkbox>
           </el-checkbox-group>
         </div>
-        <div class="title">
-          &nbsp;
-        </div>
+        <section v-if="lastCommits.length > 0">
+          <div class="splitter"></div>
+          <div class="title">
+            Latest updates
+            <span><a class="toggle" href="https://github.com/b1ueb1ues/b1ueb1ues.github.io/commits/master" target="blank">See more</a></span>
+          </div>
+          <ul class="commits">
+            <li v-for="(c) in lastCommits" :key="c.sha">
+              <span class="message">{{c.message}}</span>
+              <span class="date">{{c.at}}</span>
+            </li>
+          </ul>
+        </section>
+        <div class="splitter"></div>
         <div class="filter footer">
           <div class="links">
             <a href="https://github.com/b1ueb1ues/b1ueb1ues.github.io/blob/master/dl-sim/README.md">About</a>
             <a class="pl-15" href="https://github.com/b1ueb1ues/b1ueb1ues.github.io/issues/new">Feedback</a>
-            <a class="pl-15" href="https://github.com/b1ueb1ues/b1ueb1ues.github.io/blob/master/dl-sim/amulet.csv">Wrymprints</a>
+            <a class="pl-15" href="https://wildshinobu.pythonanywhere.com/ui/dl_simc.html">Custom Build</a>
           </div>
-          <div class="powerby mb-5">powered by <a href="https://cn.vuejs.org/">Vue</a> and <a href="https://element.eleme.cn/">Element</a></div>
+          <!-- <div class="powerby mb-5">powered by <a href="https://cn.vuejs.org/">Vue</a> and <a href="https://element.eleme.cn/">Element</a></div> -->
         </div>
       </div>
     </div>
@@ -510,9 +507,9 @@ export default class DpsComponent extends Vue {
 }
 
 .holder .popper {
-  color: #eeeeee !important;
-  background: rgba(0, 0, 0, 0.8) !important;
-  border-color: rgba(0, 0, 0, 0.8) !important;
+  color: #fff !important;
+  background: #303133 !important;
+  border-color: #303133 !important;
   padding: 4px 8px !important;
   font-size: 12px !important;
   box-shadow: none !important;
@@ -520,7 +517,7 @@ export default class DpsComponent extends Vue {
 }
 
 .holder .popper .popper__arrow {
-  border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent !important;
+  border-color: #303133 transparent transparent transparent !important;
 }
 </style>
 
@@ -578,8 +575,9 @@ export default class DpsComponent extends Vue {
   height: 5px!important;
 }
 
-.color-aaa {
+.non-condition-dps b {
   color: #aaa !important;
+  font-weight: 400 !important;
 }
 
 .main-scrollbar {
@@ -608,6 +606,7 @@ export default class DpsComponent extends Vue {
 .holder .title .comment,
 .holder .title .condition {
   font-size: 14px !important;
+  color: #000 !important;
   font-weight: 500;
 }
 
@@ -640,15 +639,15 @@ export default class DpsComponent extends Vue {
 }
 
 .holder .comment {
-  font-size: 14px;
-  color: #555;
+  font-size: 12px;
+  color: #000;
   width: 170px;
   padding: 0px 30px 0px 10px;
 }
 
 .holder .condition {
-  color: #555;
-  font-size: 14px;
+  color: #000;
+  font-size: 12px;
   width: 170px;
   padding: 0px 10px;
 }
@@ -664,17 +663,16 @@ div.comment {
 
 .dps-progress {
   height: 100%;
+  border-radius: 2px;
 }
 
 .dps-progress:hover {
-  -webkit-box-shadow: 1px 1px 2px 1px rgba(64,158,255,0.6);
-  -moz-box-shadow: 1px 1px 2px 1px rgba(64,158,255,0.6);
-  box-shadow: 1px 1px 2px 1px rgba(64,158,255,0.6);
+  box-shadow: 0 0 0 1px #fff, 0 0 0 2px rgba(64,158,255,1);
 }
 
 .dps-details {
   padding: 6px 12px!important;
-  font-size: 14px!important;
+  font-size: 12px!important;
 }
 
 .factors {
@@ -682,6 +680,8 @@ div.comment {
   position: relative;
   box-sizing: border-box;
   background-color: #f0f0f0;
+  cursor: pointer;
+  border-radius: 2px;
 }
 
 .factors .factor {
@@ -690,6 +690,17 @@ div.comment {
   box-sizing: border-box;
   height: 12px;
   border-left: 1px solid #f0f0f0;
+}
+
+.factors .factor:first-child {
+  border-left: none;
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.factors .factor:nth-last-child(2) {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
 }
 
 .factors .factor:hover {
@@ -755,7 +766,7 @@ div.full {
 }
 
 span.f-title {
-  color: #cccccc;
+  color: #999;
 }
 
 .aside {
@@ -858,28 +869,22 @@ span.f-title {
     padding-inline-start: 20px;
     font-size: 12px;
   }
-  
+
   .aside .commits li {
     line-height: 22px;
   }
-  
+
   /* .aside .commits .message {
-    
+
   } */
-  
+
   .aside .commits .date {
-    float: right;
-    color: #666666;
-    padding-right: 40px;
+    display: block;
+    color: #aaa;
   }
 
 .aside .footer {
-  /* position: absolute;
-  bottom: 0px;
-  right: 0px;
-  width: 100%;
-  margin: 0px;
-  padding: 0px; */
+  padding-bottom: 20px;
 }
 
 .aside .footer .powerby {
@@ -898,14 +903,14 @@ span.f-title {
 
 .aside .footer .links a {
   font-size: 11px;
-  color: #555;
+  color: #aaa;
   text-decoration: none;
 }
 
 .aside .footer .links a:hover,
 .aside .footer .powerby a:hover {
   text-decoration: underline;
-  color: #333;
+  color: #999;
 }
 
 @media screen and (max-width: 800px) {
@@ -934,11 +939,13 @@ span.f-title {
 
   .aside {
     z-index: 999;
-    background: #fafafa;
-    right: -320px;
+    background: #fff;
+    transform: translate3d(320px,0,0);
+    box-shadow: 0 0 12px rgba(0,0,0,0);
   }
   .aside.show {
-    right: 0px;
+    transform: translate3d(0,0,0);
+    box-shadow: 0 0 12px rgba(0,0,0,0.15);
   }
 
   .main-scrollbar {
@@ -953,12 +960,12 @@ span.f-title {
   .aside .the-brand {
     display: none;
   }
-  
+
   .aside .closer {
     font-size: 24px;
     margin-right: 15px;
     margin-top: -10px;
-    color: #999;
+    color: #666;
     cursor: pointer;
   }
 
