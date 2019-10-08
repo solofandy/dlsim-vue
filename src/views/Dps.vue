@@ -3,8 +3,8 @@
     <div class="head" v-if="mobileView">
       <div class="logo">
         <img class="brand" src="/dl-sim/logo-new.png" />
-        <div class="fr menu">
-          <i class="el-icon-s-operation" @click="asideHidden = false"></i>
+        <div class="menu" @click="asideHidden = false">
+          <i class="el-icon-s-operation"></i>
         </div>
       </div>
     </div>
@@ -138,6 +138,7 @@
         </li>
       </ul>
     </div>
+    <div class="aside-invisible-closer" :class="{show: mobileView && !asideHidden}" @click="asideHidden = true" v-if="mobileView"></div>
     <div class="aside the-filter" :class="{show: mobileView && !asideHidden}">
       <div class="aside-container">
         <div class="the-brand">
@@ -275,10 +276,10 @@
           <div class="splitter"></div>
           <div class="title">
             Latest updates
-            <span><a class="toggle" href="https://github.com/b1ueb1ues/b1ueb1ues.github.io/commits/master" target="blank">See more</a></span>
+            <span class="fr mr-20"><a class="toggle" href="https://github.com/b1ueb1ues/b1ueb1ues.github.io/commits/master" target="blank">See more</a></span>
           </div>
           <ul class="commits">
-            <li v-for="(c) in lastCommits" :key="c.sha">
+            <li v-for="(c) in lastCommits" :key="c.sha" class="mr-20">
               <span class="message">{{c.message}}</span>
               <span class="date">{{c.at}}</span>
             </li>
@@ -774,6 +775,7 @@ span.f-title {
   padding-left: 30px;
   position: fixed;
   overflow-y: auto;
+  overflow-x: visible;
   top: 0;
   right: 0;
   bottom: 0;
@@ -872,6 +874,7 @@ span.f-title {
 
   .aside .commits li {
     line-height: 22px;
+    margin-bottom: 10px;
   }
 
   /* .aside .commits .message {
@@ -921,13 +924,15 @@ span.f-title {
     box-shadow: 0px 2px 5px 0px rgba(221,221,221,1);
   }
   .head .logo {
-    height: 30px;
-    padding: 15px 15px;
+    height: 60px;
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
   .head .brand {
-    width: 117px;
-    height: 30px;
+    width: 150px;
   }
 
   .head .menu {
@@ -943,6 +948,7 @@ span.f-title {
     transform: translate3d(320px,0,0);
     box-shadow: 0 0 12px rgba(0,0,0,0);
   }
+
   .aside.show {
     transform: translate3d(0,0,0);
     box-shadow: 0 0 12px rgba(0,0,0,0.15);
@@ -963,10 +969,23 @@ span.f-title {
 
   .aside .closer {
     font-size: 24px;
-    margin-right: 15px;
-    margin-top: -10px;
+    padding: 20px;
+    margin-top: -27px;
     color: #666;
     cursor: pointer;
+  }
+
+  .aside-invisible-closer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: none;
+  }
+
+  .aside-invisible-closer.show {
+    display: block;
   }
 
   .mobile-holder {
