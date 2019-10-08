@@ -181,7 +181,7 @@
             :min="0"
             :step="500"
             size="mini"
-            @change="reload()"
+            @change="changeTeamDPS()"
           ></el-input-number>
         </div>
         <div class="title">Co-abilities</div>
@@ -385,9 +385,19 @@ export default class DpsComponent extends Vue {
     this.loading = false;
   }
 
+  public changeTeamDPS() {
+    localStorage.setItem('teamdps', this.teamDPS.toString());
+    this.reload();
+  }
+
   public mounted() {
     (window as any).$dps = this;
     (window as any).$http = Http;
+
+    if (localStorage.getItem('teamdps')) {
+      this.teamDPS = parseInt(localStorage.getItem('teamdps')!, 10);
+    }
+
     this.mobileView = window.innerWidth <= 800;
     window.onresize = () => {
       this.mobileView = window.innerWidth <= 800;
